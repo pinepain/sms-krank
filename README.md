@@ -1,6 +1,6 @@
 sms-krank
-[![Build Status](https://travis-ci.org/zaq178miami/sms-krank.png)](https://travis-ci.org/zaq178miami/sms-krank)
 =========
+[![Build Status](https://travis-ci.org/pinepain/sms-krank.png)](https://travis-ci.org/pinepain/sms-krank)
 
 A library for sending SMS messages through various service providers (gateways) based on pre-sets and phone number to minimize costs.
 The main purpose is to reduce SMS costs by sengind messages through the most suitable (cheeper) providers based on pre-sets and/or phone number.
