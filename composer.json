@@ -4,6 +4,7 @@
     "description": "Lightweight AMQP framework built on top of the peacl-amqp extension",
     "keywords": ["sms", "international", "api", "providers", "gates"],
     "homepage": "https://github.com/pinepain/sms-krank",
+    "license": "MIT",
     "authors": [
         {
             "name": "Bogdan Padalko",
