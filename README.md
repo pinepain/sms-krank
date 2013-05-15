@@ -1,4 +1,5 @@
 sms-krank
+[![Build Status](https://travis-ci.org/zaq178miami/sms-krank.png)](https://travis-ci.org/zaq178miami/sms-krank)
 =========
 
 A library for sending SMS messages through various service providers (gateways) based on pre-sets and phone number to minimize costs.
