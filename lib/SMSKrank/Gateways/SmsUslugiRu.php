@@ -9,7 +9,7 @@ use SMSKrank\Exceptions\GatewayException;
 
 use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
-use SMSKrank\Number;
+use SMSKrank\PhoneNumber;
 
 class SmsUslugiRu implements GatewayInterface
 {
@@ -23,7 +23,7 @@ class SmsUslugiRu implements GatewayInterface
 
     }
 
-    public function send(Number $number, Message $message, \DateTime $schedule = null)
+    public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
         $args = array(
             'login' => $this->login,

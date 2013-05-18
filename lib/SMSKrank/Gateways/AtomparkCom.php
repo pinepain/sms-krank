@@ -9,7 +9,7 @@ use SMSKrank\Exceptions\GatewayException;
 
 use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
-use SMSKrank\Number;
+use SMSKrank\PhoneNumber;
 
 class AtomparkCom implements GatewayInterface
 {
@@ -80,7 +80,7 @@ class AtomparkCom implements GatewayInterface
 //        return null; // moderation
 //    }
 
-    public function send(Number $number, Message $message, \DateTime $schedule = null)
+    public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
         $args = array(
             'key'    => $this->public_key,

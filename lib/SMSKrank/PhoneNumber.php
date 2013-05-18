@@ -3,7 +3,7 @@
 namespace SMSKrank;
 
 
-class Number {
+class PhoneNumber {
     private $number;
 
     public function __construct($phone_number) {

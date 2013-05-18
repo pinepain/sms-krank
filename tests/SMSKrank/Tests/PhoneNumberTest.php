@@ -6,15 +6,15 @@
 
 namespace SMSKrank\Tests;
 
-use SMSKrank\Number;
+use SMSKrank\PhoneNumber;
 
-class NumberTest extends \PHPUnit_Framework_TestCase {
+class PhoneNumberTest extends \PHPUnit_Framework_TestCase {
 
 
     public function testGetNumber()
     {
         $number = '12345';
-        $object = new Number($number);
-        $this->assertEquals($object->getNumber(), $number);
+        $object = new PhoneNumber($number);
+        $this->assertEquals($number, $object->getNumber());
     }
 }
