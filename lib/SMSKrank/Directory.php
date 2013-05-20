@@ -3,16 +3,25 @@
 namespace SMSKrank;
 
 use SMSKrank\Exceptions\DirectoryException;
+use SMSKrank\Utils\ZonesLoader;
 
 class Directory {
-    private $prefixes;
+    private $zones_loader;
 
-    public function __construct(array $prefixes) {
-        $this->prefixes = $prefixes;
+    public function __construct(ZonesLoader $zones_loader) {
+        $this->zones_loader = $zones_loader;
     }
 
     public function getPhoneNumberCountry(PhoneNumber $number) {
-        return $this->getCountryCodeFromNumber($number->getNumber(), $this->prefixes);
+        $zone = $this->zones_loader->get($number->getZone());
+
+        $country = $this->getCountryCodeFromNumber(substr($number->getNumber(), 1), $zone);
+
+        if ($country === false ) {
+            throw new DirectoryException('Phone number calling code is not supported');
+        }
+
+        return $country;
     }
 
     private function getCountryCodeFromNumber($number, array $prefixes) {
@@ -25,13 +34,8 @@ class Directory {
                 }
                 return $prefixes[$n];
             }
-            // TODO: should we ???
-//            elseif (isset($prefixes['default'])) {
-//                return $prefixes['default'];
-//            }
         }
-
-        throw new DirectoryException('Phone number calling code is not supported');
+        return false;
     }
 
 }

@@ -34,4 +34,6 @@
 +387: BA
 +388: EU
 +389: MK
-+39: IT, VA # http://en.wikipedia.org/wiki/%2B39
++39: # IT, VA # http://en.wikipedia.org/wiki/%2B39
+  0-9     : IT
+  '06698' : VA #Vatican City from rest of the world)

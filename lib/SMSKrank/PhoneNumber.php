@@ -14,6 +14,10 @@ class PhoneNumber {
         return $this->number;
     }
 
+    public function getZone() {
+        return $this->number[0];
+    }
+
 //    public function getCountry() {
 //        throw new \Exception('Not Implemented Yet');
 //    }

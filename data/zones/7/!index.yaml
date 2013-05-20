@@ -1,0 +1,16 @@
+# Zone 7: Former  Soviet Union
+
++7: #RU, KZ
+  0  : -- # Not used (long distance and international prefix)
+  1  : -- # Not used (for special services)
+  2  : -- # Reserved (for common usage with Kazakhstan)
+  3  : RU # Geographic codes
+  4  : RU # Geographic codes
+  5  : -- # Reserved
+  6  : KZ # Used for numbers in Kazakhstan
+  7  : KZ # Used for numbers in Kazakhstan
+  8  : -- # Geographic codes, Toll-Free, and Pay-Line (for common usage with Kazakhstan and Abkhazia)
+  840: GE #, land # Geographic codes, Toll-Free, and Pay-Line (for common usage with Kazakhstan and Abkhazia)
+  9  : RU #, mobile # Mobile, GSM, & Pay-Line (code 940 is for Abkhazia mobiles)
+  940: GE #, mobile # Mobile, GSM, & Pay-Line (code 940 is for Abkhazia mobiles)
+
