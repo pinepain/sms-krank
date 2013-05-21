@@ -66,7 +66,8 @@ class ZonesLoader
             if (is_array($country)) {
                 $country = $this->expandZoneData($country);
             } elseif ($country == '--') {
-                continue; // just ignore empty ranges
+                $country = false;
+//                continue; // just ignore empty ranges
             }
 
             if (strpos($code, '-')) {
@@ -116,21 +117,25 @@ class ZonesLoader
                         $placeholder = array_fill(0, 10, $existent[$sub]);
                         $existent[$sub] = $this->joinSubZones($placeholder, $nested);
                     } else {
+                        $_nested = false === $nested ? "<empty set>" : $nested;
                         if ($existent[$sub] == $nested) {
                             // potential mistake: zone record occurred multiple time under different path
                             trigger_error(
-                                "Potential records mistake: {$nested} occurred more than one time under same calling code",
+                                "Potential records mistake: {$_nested} occurred more than one time under same calling code",
                                 E_USER_NOTICE
                             );
                         } else {
                             // potential conflict: two different zone records have the same calling code
                             trigger_error(
-                                "Potential records conflict: {$existent[$sub]} will be overridden by {$nested}",
+                                "Potential records conflict: {$existent[$sub]} will be overridden by {$_nested}",
                                 E_USER_WARNING
                             );
                         }
-
-                        $existent[$sub] = $nested;
+                        if (false === $nested) {
+                            unset($existent[$sub]);
+                        } else {
+                            $existent[$sub] = $nested;
+                        }
                     }
                 } else {
                     if (is_array($nested)) {
@@ -141,6 +146,10 @@ class ZonesLoader
                 }
             } else {
                 $existent[$sub] = $nested;
+            }
+
+            if (empty($existent[$sub])) {
+                unset($existent[$sub]);
             }
         }
 
