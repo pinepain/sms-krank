@@ -1,7 +1,7 @@
 {
     "name": "pinepain/sms-krank",
     "type": "library",
-    "description": "Lightweight AMQP framework built on top of the peacl-amqp extension",
+    "description": "Library for sending SMS messages through various service providers (gateways)",
     "keywords": ["sms", "international", "api", "providers", "gates"],
     "homepage": "https://github.com/pinepain/sms-krank",
     "license": "MIT",
