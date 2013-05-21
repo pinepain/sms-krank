@@ -13,8 +13,11 @@ class ZonesLoader
     public $zones = array();
     private $source;
 
-    public function __construct($source)
+    public function __construct($source=null)
     {
+        if (!$source) {
+            $source = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', '..', 'data', 'zones'));
+        }
         if (!file_exists($source)) {
             throw new \Exception('Source directory does not exists');
         }
@@ -117,20 +120,20 @@ class ZonesLoader
                         $placeholder = array_fill(0, 10, $existent[$sub]);
                         $existent[$sub] = $this->joinSubZones($placeholder, $nested);
                     } else {
-                        $_nested = false === $nested ? "<empty set>" : $nested;
-                        if ($existent[$sub] == $nested) {
-                            // potential mistake: zone record occurred multiple time under different path
-                            trigger_error(
-                                "Potential records mistake: {$_nested} occurred more than one time under same calling code",
-                                E_USER_NOTICE
-                            );
-                        } else {
-                            // potential conflict: two different zone records have the same calling code
-                            trigger_error(
-                                "Potential records conflict: {$existent[$sub]} will be overridden by {$_nested}",
-                                E_USER_WARNING
-                            );
-                        }
+//                        $_nested = false === $nested ? "<empty set>" : $nested;
+//                        if ($existent[$sub] == $nested) {
+//                            // potential mistake: zone record occurred multiple time under different path
+//                            trigger_error(
+//                                "Potential records mistake: {$_nested} occurred more than one time under same calling code",
+//                                E_USER_NOTICE
+//                            );
+//                        } else {
+//                            // potential conflict: two different zone records have the same calling code
+//                            trigger_error(
+//                                "Potential records conflict: {$existent[$sub]} will be overridden by {$_nested}",
+//                                E_USER_WARNING
+//                            );
+//                        }
                         if (false === $nested) {
                             unset($existent[$sub]);
                         } else {
