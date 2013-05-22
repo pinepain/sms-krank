@@ -12,30 +12,30 @@ class Directory {
         $this->zones_loader = $zones_loader;
     }
 
-    public function getPhoneNumberCountry(PhoneNumber $number) {
+    public function getPhoneNumberInfo(PhoneNumber $number) {
         $zone = $this->zones_loader->get($number->getZone());
 
-        $country = $this->getCountryCodeFromNumber(substr($number->getNumber(), 1), $zone);
+        list($calling_code, $country) = $this->getCountryCodeFromNumber(substr($number->getNumber(), 1), $zone, $number->getZone());
 
-        if ($country === false ) {
+        if ($calling_code === false ) {
             throw new DirectoryException('Phone number calling code is not supported');
         }
 
-        return $country;
+        return new PhoneNumberInfo($calling_code, $country);
     }
 
-    private function getCountryCodeFromNumber($number, array $prefixes) {
+    private function getCountryCodeFromNumber($number, array $prefixes, $code) {
         if (!empty($prefixes) && !empty($number)) {
             $n = $number[0];
+            $code .= $n;
 
             if (isset($prefixes[$n])) {
                 if (is_array($prefixes[$n])) {
-                    return $this->getCountryCodeFromNumber(substr($number, 1), $prefixes[$n]);
+                    return $this->getCountryCodeFromNumber(substr($number, 1), $prefixes[$n], $code);
                 }
-                return $prefixes[$n];
+                return array($code, $prefixes[$n]);
             }
         }
-        return false;
+        return array(false, false);
     }
-
 }
