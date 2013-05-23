@@ -3,6 +3,7 @@
 namespace SMSKrank;
 
 use SMSKrank\Exceptions\DirectoryException;
+use SMSKrank\Utils\Exceptions\ZonesLoaderException;
 use SMSKrank\Utils\ZonesLoader;
 
 class Directory {
@@ -13,15 +14,19 @@ class Directory {
     }
 
     public function getPhoneNumberInfo(PhoneNumber $number) {
-        $zone = $this->zones_loader->get($number->getZone());
+        try {
+            $zone = $this->zones_loader->get($number->getZone());
 
-        list($calling_code, $country) = $this->getCountryCodeFromNumber(substr($number->getNumber(), 1), $zone, $number->getZone());
+            list($calling_code, $country) = $this->getCountryCodeFromNumber(substr($number->getNumber(), 1), $zone, $number->getZone());
 
-        if ($calling_code === false ) {
+            if ($calling_code === false ) {
+                throw new DirectoryException('Phone number zone is not supported');
+            }
+
+            return new PhoneNumberInfo($calling_code, $country);
+        } catch (ZonesLoaderException $e) {
             throw new DirectoryException('Phone number calling code is not supported');
         }
-
-        return new PhoneNumberInfo($calling_code, $country);
     }
 
     private function getCountryCodeFromNumber($number, array $prefixes, $code) {

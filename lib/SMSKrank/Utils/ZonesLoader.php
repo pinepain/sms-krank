@@ -2,8 +2,6 @@
 
 namespace SMSKrank\Utils;
 
-//use Symfony\Component\Yaml\Exception\ParseException;
-//use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 use SMSKrank\Utils\Exceptions\ZonesLoaderException;
@@ -43,11 +41,11 @@ class ZonesLoader
         $zone_index = $this->source . DIRECTORY_SEPARATOR . $zone . DIRECTORY_SEPARATOR . '!index.yaml';
 
         if (!file_exists($zone_index)) {
-            throw new \Exception("Zone file {$zone} does not exists");
+            throw new ZonesLoaderException("Zone file {$zone} does not exists");
         }
 
         if (!is_readable($zone_index)) {
-            throw new \Exception("Zone file {$zone} is not readable");
+            throw new ZonesLoaderException("Zone file {$zone} is not readable");
         }
 
         $zone_data = Yaml::parse(file_get_contents($zone_index));
