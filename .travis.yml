@@ -6,12 +6,9 @@ php:
   - "5.3"
 #  - "5.2"
 
-env:
-  - NO_INTERACTION=1 TEST_TIMEOUT=120
-
 before_script:
-  - curl -sS https://getcomposer.org/installer | php
-  - php composer.pher install --dev
+  - sh -c "curl -sS https://getcomposer.org/installer | php"
+  - sh -c "php composer.pher install --dev"
 
 script: phpunit --coverage-text --configuration ./tests/phpunit.xml
 
