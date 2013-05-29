@@ -7,8 +7,8 @@ php:
 #  - "5.2"
 
 before_script:
-  - sh -c "curl -sS https://getcomposer.org/installer | php"
-  - sh -c "php composer.pher install --dev"
+  - composer self-update
+  - composer install --dev
 
 script: phpunit --coverage-text --configuration ./tests/phpunit.xml
 
