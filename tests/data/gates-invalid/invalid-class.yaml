@@ -1,0 +1,5 @@
+invalid-class:
+  class: 'NonExistent'
+  args:
+    login: 'invalid-class'
+    password: 'invalid-class'

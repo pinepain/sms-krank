@@ -1,0 +1,4 @@
+invalid-missed-class:
+  args:
+    login: 'missed-class'
+    password: 'missed-class'

@@ -1,0 +1,5 @@
+invalid-missed-class:
+  class: \SMSKrank\Helpers\Gateways\DoesNotImplement
+  args:
+    login: 'missed-class'
+    password: 'missed-class'

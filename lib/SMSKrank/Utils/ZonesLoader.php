@@ -16,9 +16,15 @@ class ZonesLoader
         if (!$source) {
             $source = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', '..', 'data', 'zones'));
         }
+
         if (!file_exists($source)) {
-            throw new \Exception('Source directory does not exists');
+            throw new ZonesLoaderException('Source directory does not exists');
         }
+
+        if (is_file($source)) {
+            throw new ZonesLoaderException('Source directory is file');
+        }
+
         $this->source = $source;
     }
 

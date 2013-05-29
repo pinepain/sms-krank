@@ -1,0 +1,3 @@
+invalid-args:
+  class: '\SMSKrank\Helpers\Gateways\BlackHole'
+  args: args should be an array of arguments to pass into class constructor

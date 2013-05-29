@@ -1,0 +1,4 @@
+BlackHole-first:
+  class: '\SMSKrank\Helpers\Gateways\BlackHole'
+  args:
+    password: 'test-first'
