@@ -10,7 +10,8 @@ env:
   - NO_INTERACTION=1 TEST_TIMEOUT=120
 
 before_script:
-  - composer install --dev
+  - curl -sS https://getcomposer.org/installer | php
+  - php composer.pher install --dev
 
 script: phpunit --coverage-text --configuration ./tests/phpunit.xml
 

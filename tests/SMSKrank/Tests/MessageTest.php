@@ -43,9 +43,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Message::__construct
-     * @covers Message::getText
-     * @covers Message::getLength
+     * @covers \SMSKrank\Message::__construct
+     * @covers \SMSKrank\Message::getText
+     * @covers \SMSKrank\Message::getLength
      *
      * @dataProvider providerMessage
      */
