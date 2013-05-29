@@ -25,7 +25,6 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 
         return array(
             array(__DIR__ . '/../../../data/gates/first.yaml', "Source directory is file", 'second'),
-
             array($dir . '/garbage.yaml', "Garbage in group file 'garbage'"),
             array($dir . '/invalid-args.yaml', "Gateway class arguments has wrong type"),
             array($dir . '/invalid-class.yaml', "Gateway class doesn't exists"),
@@ -90,7 +89,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   GatewaysLoader::__construct
+     * @covers                   \SMSKrank\Utils\GatewaysLoader::__construct
      *
      * @expectedException \PHPUnit_Framework_Error_Warning
      * @expectedExceptionMessage Missing argument
@@ -102,7 +101,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       GatewaysLoader::__construct
+     * @covers                   \SMSKrank\Utils\GatewaysLoader::__construct
      *
      * @dataProvider providerSources
      */
@@ -117,8 +116,8 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       GatewaysLoader::load
-     * @covers       GatewaysLoader::validateGroupData
+     * @covers       \SMSKrank\Utils\GatewaysLoader::load
+     * @covers       \SMSKrank\Utils\GatewaysLoader::validateGroupData
      *
      * @dataProvider providerInvalidYamls
      */
@@ -136,8 +135,8 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       GatewaysLoader::load
-     * @covers       GatewaysLoader::validateGroupData
+     * @covers       \SMSKrank\Utils\GatewaysLoader::load
+     * @covers       \SMSKrank\Utils\GatewaysLoader::validateGroupData
      *
      * @dataProvider providerValidYamls
      */
