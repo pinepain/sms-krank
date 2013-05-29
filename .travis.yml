@@ -9,6 +9,9 @@ php:
 env:
   - NO_INTERACTION=1 TEST_TIMEOUT=120
 
+before_script:
+  - composer install --dev
+
 script: phpunit --coverage-text --configuration ./tests/phpunit.xml
 
 notify:
