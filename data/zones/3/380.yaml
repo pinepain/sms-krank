@@ -1,48 +1,296 @@
 # Based on http://www.itu.int/oth/T02020000DB/en
 #   version from 2010-02-25
-# http://en.wikipedia.org/wiki/+39
+#
+# http://en.wikipedia.org/wiki/+380
 # http://en.wikipedia.org/wiki/List_of_dialling_codes_in_Ukraine
+# http://en.wikipedia.org/wiki/International_mobile_phone_codes
 
-31: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Zakarpattya region
-32: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Lviv region
-33: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Volyn region
-34: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Ivano-Frankivsk region
-35: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Ternopil region
-36: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Rivne region
-37: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Chernivtsi region
-38: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Khmelnysky region
-41: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Zhytomyr region
-43: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Vinnytsya region
-44: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Kyiv region
-45: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Kyiv region
-46: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Chernihiv region
-47: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Chorkusy region
-48: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Odesa region
-51: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Mykolayiv region
-52: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Kirovohrad region
-53: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Poltava region
-54: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Sumy region
-55: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Kherson region
-56: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Dnipropetrovsk region
-57: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Kharkiv region
-61: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Zaporizhzhya region
-62: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Donetsk region
-64: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Luhansk region
-65: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Crimea region
-69: UA #, fixed # Geographic number for fixed telephony services (area code)    Area code for Sevastopol region
- #
-39: UA #, mobile # Non-geographic number – mobile services assigned to Golden Telecom                  GSM 1800
-50: UA #, mobile # Non-geographic number – mobile services assigned to UMC                             GSM 900/1800
-63: UA #, mobile # Non-geographic number – mobile services assigned to Astelit                         DCS 1800
-66: UA #, mobile # Non-geographic number – mobile services assigned to UMC                             GSM 900/1800
-67: UA #, mobile # Non-geographic number – mobile services assigned to Kyivstar GSM                    GSM 900/1800
-68: UA #, mobile # Non-geographic number – mobile services assigned to Ukrainian Radio Systems         GSM 900/1800
-91: UA #, mobile # Non-geographic number – mobile services assigned to Ukrtelecom                      UMTS/IMT-2000
-92: UA #, mobile # Non-geographic number – mobile services assigned to Telesytstems of Ukraine         CDMA
-93: UA #, mobile # Non-geographic number – mobile services assigned to Astelit                         GSM 900
-94: UA #, mobile # Non-geographic number – mobile services assigned to International Telecommunication CDMA 800
-95: UA #, mobile # Non-geographic number – mobile services assigned to UMC                             GSM 900/1800
-96: UA #, mobile # Non-geographic number – mobile services assigned to Kyivstar GSM                    GSM 900/1800
-97: UA #, mobile # Non-geographic number – mobile services assigned to Kyivstar GSM                    GSM 900/1800
-98: UA #, mobile # Non-geographic number – mobile services assigned to Kyivstar GSM                    GSM 900/1800
-99: UA #, mobile # Non-geographic number – mobile services assigned to UMC                             GSM 900/1800
+
+# Country globals
+country: UA
+code:
+  country: 380  # international calling code
+nsn    : 9      # national significant number
+
+
+# Geographic number for fixed telephony services (area code)
+31:
+  type: fixed
+  code:
+    area: 31 # area calling code
+  geo:
+    area: Zakarpattya
+
+32:
+  type: fixed
+  code:
+    area: 32
+  geo:
+      area: Lviv
+
+33:
+  type: fixed
+  code:
+    area: 33
+  geo:
+      area: Volyn
+
+34:
+  type: fixed
+  code:
+    area: 34
+  geo:
+      area: Ivano-Frankivsk
+
+35:
+  type: fixed
+  code:
+    area: 35
+  geo:
+      area: Ternopil
+
+36:
+  type: fixed
+  code:
+    area: 36
+  geo:
+      area: Rivne
+
+37:
+  type: fixed
+  code:
+    area: 37
+  geo:
+      area: Chernivtsi
+
+38:
+  type: fixed
+  code:
+    area: 38
+  geo:
+      area: Khmelnysky
+
+41:
+  type: fixed
+  code:
+    area: 41
+  geo:
+      area: Zhytomyr
+
+43:
+  type: fixed
+  code:
+    area: 43
+  geo:
+      area: Vinnytsya
+
+44:
+  type: fixed
+  code:
+    area: 44
+  geo:
+      city: Kyiv
+
+45:
+  type: fixed
+  code:
+    area: 45
+  geo:
+      area: Kyiv
+
+46:
+  type: fixed
+  code:
+    area: 46
+  geo:
+      area: Chernihiv
+
+47:
+  type: fixed
+  code:
+    area: 47
+  geo:
+      area: Cherkasy
+
+48:
+  type: fixed
+  code:
+    area: 48
+  geo:
+      area: Odesa
+
+51:
+  type: fixed
+  code:
+    area: 51
+  geo:
+      area:
+
+52:
+  type: fixed
+  code:
+    area: 52
+  geo:
+      area: Kirovohrad
+
+53:
+  type: fixed
+  code:
+    area: 53
+  geo:
+      area: Poltava
+
+54:
+  type: fixed
+  code:
+    area: 54
+  geo:
+      area: Sumy
+
+55:
+  type: fixed
+  code:
+    area: 55
+  geo:
+      area: Kherson
+
+56:
+  type: fixed
+  code:
+    area: 56
+  geo:
+      area: Dnipropetrovsk
+
+57:
+  type: fixed
+  code:
+    area: 57
+  geo:
+      area: Kharkiv
+
+61:
+  type: fixed
+  code:
+    area: 61
+  geo:
+      area: Zaporizhzhya
+
+62:
+  type: fixed
+  code:
+    area: 62
+  geo:
+      area: Donetsk
+
+64:
+  type: fixed
+  code:
+    area: 64
+  geo:
+      area: Luhansk
+
+65:
+  type: fixed
+  code:
+    area: 65
+  geo:
+      area: Crimea
+
+69:
+  type: fixed
+  code:
+    area: 69
+  geo:
+      city: Sevastopol
+
+
+# Non-geographic number – mobile services
+39:
+  type: mobile
+  code:
+    area: 39
+  operator: GOLDEN_TELECOM
+
+50:
+  type: mobile
+  code:
+    area: 50
+  operator: MTS
+
+63:
+  type: mobile
+  code:
+    area: 63
+  operator: LIFE
+
+66:
+  type: mobile
+  code:
+    area: 66
+  operator: MTS
+
+67:
+  type: mobile
+  code:
+    area: 67
+  operator: KYIVSTAR
+
+68:
+  type: mobile
+  code:
+    area: 68
+  operator: BEELINE
+
+91:
+  type: mobile
+  code:
+    area: 91
+  operator: UTEL
+
+92:
+  type: mobile
+  code:
+    area: 92
+  operator: PEOPLENET
+
+93:
+  type: mobile
+  code:
+    area: 93
+  operator: LIFE
+
+94:
+  type: mobile
+  code:
+    area: 94
+  operator: INTERTELECOM
+
+95:
+  type: mobile
+  code:
+    area: 95
+  operator: MTS
+
+96:
+  type: mobile
+  code:
+    area: 96
+  operator: KYIVSTAR
+
+97:
+  type: mobile
+  code:
+    area: 97
+  operator: KYIVSTAR
+
+98:
+  type: mobile
+  code:
+    area: 98
+  operator: KYIVSTAR
+
+99:
+  type: mobile
+  code:
+    area: 99
+  operator: MTS

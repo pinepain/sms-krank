@@ -11,7 +11,7 @@ class ZonesLoader
     public $zones = array();
     private $source;
 
-    public function __construct($source=null)
+    public function __construct($source = null)
     {
         if (!$source) {
             $source = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', '..', 'data', 'zones'));
@@ -44,40 +44,74 @@ class ZonesLoader
             return $this->zones;
         }
 
-        $zone_index = $this->source . DIRECTORY_SEPARATOR . $zone . DIRECTORY_SEPARATOR . '!index.yaml';
-
-        if (!file_exists($zone_index)) {
-            throw new ZonesLoaderException("Zone file {$zone} does not exists");
-        }
-
-        if (!is_readable($zone_index)) {
-            throw new ZonesLoaderException("Zone file {$zone} is not readable");
-        }
-
-        $zone_data = Yaml::parse(file_get_contents($zone_index));
-
-        $expanded = $this->expandZoneData($zone_data);
+        $loaded = $this->loadZoneDescription($zone, '!index');
 
         unset($this->zones[$zone]); // cleanup old zone data, if any
 
-        return $this->zones += $expanded;
+        return $this->zones += $loaded;
     }
 
-    private function expandZoneData(array $data)
+
+    private function loadZoneDescription($zone, $desc_name)
     {
-        $out = array();
+        $desc_file = $this->source . DIRECTORY_SEPARATOR . $zone . DIRECTORY_SEPARATOR . $desc_name . '.yaml';
+
+        if (!file_exists($desc_file)) {
+            throw new ZonesLoaderException("Zone #{$zone} file '{$desc_name}.yaml' does not exists");
+        }
+
+        if (!is_readable($desc_file)) {
+            throw new ZonesLoaderException("Zone #{$zone} file '{$desc_name}.yaml' is not readable");
+        }
+
+        $desc_data = Yaml::parse(file_get_contents($desc_file));
+
+        return $this->expandZoneData($desc_data);
+    }
+
+
+    private function expandZoneData(array $data, $prefix = '')
+    {
+        $out       = array();
+        $out_props = array();
+
+        // get out all props from current level
+
+        foreach ($data as $code => $value) {
+            $_code = str_replace(array('-', ' '), '', $code);
+
+            if (!is_numeric($_code)) {
+                $out_props[$code] = $value;
+                unset($data[$code]);
+            }
+        }
 
         foreach ($data as $code => $country) {
             $code = (string)$code;
 
+            // process numbers and ranges
+
             if (is_array($country)) {
-                $country = $this->expandZoneData($country);
-            } elseif ($country == '--') {
-                $country = false;
-//                continue; // just ignore empty ranges
+                $country = $this->expandZoneData($country, $prefix . $code);
+            } elseif ($country === '--') {
+                $country = false; // not supported
+            } elseif ($country === '++') {
+                // support sub-zone files
+                $_prefix = $prefix . $code;
+                $country = $this->loadZoneDescription($_prefix[0], $_prefix);
+            } elseif ($country === '==') {
+                $country = array();
+            } elseif ($country) {
+                // support short notation <dialing or area code or any other range> : <country alpha-2 code>
+                $country = array(
+                    '~' => array('country' => $country)
+                );
+            } else {
+                $country = false; // no country value was provided
             }
 
             if (strpos($code, '-')) {
+                // codes range
                 $_code = str_replace(' ', '', $code);
                 $_code = explode('-', $_code);
 
@@ -87,26 +121,54 @@ class ZonesLoader
 
                 list ($start, $end) = $_code;
 
-                $size = $end - $start;
+                $size = $end - $start + 1; // +1 because indexes are from 0 to 9 and we count from 1 to 9
 
-                if ($size < 1) {
+                // TODO: start and end should be in [0, 9], start < end, when range is [0,9] do nothing, just set props to current level
+
+                if ($start > 9 || $end > 9) {
+                    throw new ZonesLoaderException("Invalid range in {$code} (start and end should be less then 10)");
+                }
+
+                if ($size < 0) {
                     throw new ZonesLoaderException("Invalid range in {$code} (start is equal or greater than end)");
                 }
 
-                if ($size > 10) {
-                    throw new ZonesLoaderException("Invalid range in {$code} (range is too large)");
+                if ($size == 10) {
+                    // optimization: do not fill whole range with same data, set props on current level and expand data on the same level
+                    $out = $country;
+                } else {
+                    $expanded = array_fill($start, $size, $country);
+                    $out      = $this->joinSubZones($out, $expanded);
                 }
 
-                $expanded = array_fill($start, $size, $country);
-                $out      = $this->joinSubZones($out, $expanded);
             } else {
+                // numeric code
+
                 if (strlen($code) > 1) {
-                    $sub = array($code[0] => $this->expandZoneData(array(substr($code, 1) => $country)));
+                    // greater than 9, so contain more than one digit
+
+                    $pos      = strlen($code) - 1;
+                    $expanded = array($code[$pos] => $country);
+
+                    for ($pos--; $pos >= 0; $pos--) {
+                        $expanded = array($code[$pos] => $expanded);
+                    }
+
+                    $sub = $expanded;
                 } else {
                     $sub = array($code => $country);
                 }
                 $out = $this->joinSubZones($out, $sub);
             }
+        }
+
+
+        ksort($out);
+
+
+        if (!empty($out_props)) {
+            ksort($out_props);
+            $out['~'] = $out_props;
         }
 
         return $out;
@@ -119,9 +181,18 @@ class ZonesLoader
 
             if (isset($existent[$sub])) {
 
-                if (!is_array($existent[$sub])) {
+                if ('~' === $sub) {
+
+//                    foreach ($new[$sub] as $k => $v) {
+//                        $existent[$sub][$k] = $v;
+//                    }
+
+                    $existent[$sub] = array_merge($existent[$sub], $new[$sub]);
+
+                    continue;
+                } elseif (!is_array($existent[$sub])) {
                     if (is_array($nested)) {
-                        $placeholder = array_fill(0, 10, $existent[$sub]);
+                        $placeholder    = array_fill(0, 10, $existent[$sub]);
                         $existent[$sub] = $this->joinSubZones($placeholder, $nested);
                     } else {
 //                        $_nested = false === $nested ? "<empty set>" : $nested;
@@ -138,24 +209,27 @@ class ZonesLoader
 //                                E_USER_WARNING
 //                            );
 //                        }
-                        if (false === $nested) {
-                            unset($existent[$sub]);
-                        } else {
-                            $existent[$sub] = $nested;
-                        }
                     }
                 } else {
                     if (is_array($nested)) {
                         $existent[$sub] = $this->joinSubZones($existent[$sub], $nested);
                     } else {
-                        $existent[$sub] = $this->joinSubZones($existent[$sub], array_fill(0, 10, $nested));
+                        if (false === $nested) {
+//                            unset($existent[$sub]);
+                            $existent[$sub] = $nested;
+                        } else {
+//                            $existent[$sub] = $nested;
+                            $existent[$sub] = $this->joinSubZones($existent[$sub], array_fill(0, 10, $nested));
+                        }
+
                     }
                 }
+
             } else {
                 $existent[$sub] = $nested;
             }
 
-            if (empty($existent[$sub])) {
+            if ($existent[$sub] == false) {
                 unset($existent[$sub]);
             }
         }
