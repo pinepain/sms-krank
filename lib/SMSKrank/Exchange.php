@@ -3,8 +3,6 @@
 namespace SMSKrank;
 
 
-
-
 $gates_map = array(
     'RU' => array()
 );
@@ -13,7 +11,7 @@ $gates_map = array(
 class Exchange {
     private $pool;
 
-    public function __construct(array $gates_map, array $gates_settings, Directory $directory) {
+    public function __construct(GatewayFactory $factory, array $gates_settings, Directory $directory) {
         $this->pool = $gates_map;
     }
 

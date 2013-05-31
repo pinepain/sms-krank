@@ -6,6 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 
 use SMSKrank\Utils\Exceptions\ZonesLoaderException;
 
+
+//TODO: extends AbstractLoader, unit tests
 class ZonesLoader
 {
     public $zones = array();
