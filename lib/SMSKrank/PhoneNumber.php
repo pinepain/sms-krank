@@ -2,11 +2,18 @@
 
 namespace SMSKrank;
 
+use SMSKrank\Exceptions\PhoneNumberException;
 
 class PhoneNumber {
     private $number;
 
     public function __construct($phone_number) {
+        $phone_number = preg_replace('/[^0-9]/', '', $phone_number);
+
+        if (!strlen($phone_number)) {
+            throw new PhoneNumberException('Empty phone number');
+        }
+
         $this->number = $phone_number;
     }
 
@@ -17,8 +24,4 @@ class PhoneNumber {
     public function getZone() {
         return $this->number[0];
     }
-
-//    public function getCountry() {
-//        throw new \Exception('Not Implemented Yet');
-//    }
 }

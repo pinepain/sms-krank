@@ -5,12 +5,14 @@
 # http://en.wikipedia.org/wiki/List_of_dialling_codes_in_Ukraine
 # http://en.wikipedia.org/wiki/International_mobile_phone_codes
 
-
 # Country globals
-country: UA
+geo:
+  country_alpha2: UA
 code:
   country: 380  # international calling code
-nsn    : 9      # national significant number
+validataion:
+  nsn    : 9 # national significant number
+  ccn    : 3 # country code number
 
 
 # Geographic number for fixed telephony services (area code)
@@ -26,182 +28,182 @@ nsn    : 9      # national significant number
   code:
     area: 32
   geo:
-      area: Lviv
+    area: Lviv
 
 33:
   type: fixed
   code:
     area: 33
   geo:
-      area: Volyn
+    area: Volyn
 
 34:
   type: fixed
   code:
     area: 34
   geo:
-      area: Ivano-Frankivsk
+    area: Ivano-Frankivsk
 
 35:
   type: fixed
   code:
     area: 35
   geo:
-      area: Ternopil
+    area: Ternopil
 
 36:
   type: fixed
   code:
     area: 36
   geo:
-      area: Rivne
+    area: Rivne
 
 37:
   type: fixed
   code:
     area: 37
   geo:
-      area: Chernivtsi
+    area: Chernivtsi
 
 38:
   type: fixed
   code:
     area: 38
   geo:
-      area: Khmelnysky
+    area: Khmelnysky
 
 41:
   type: fixed
   code:
     area: 41
   geo:
-      area: Zhytomyr
+    area: Zhytomyr
 
 43:
   type: fixed
   code:
     area: 43
   geo:
-      area: Vinnytsya
+    area: Vinnytsya
 
 44:
   type: fixed
   code:
     area: 44
   geo:
-      city: Kyiv
+    city: Kyiv
 
 45:
   type: fixed
   code:
     area: 45
   geo:
-      area: Kyiv
+    area: Kyiv
 
 46:
   type: fixed
   code:
     area: 46
   geo:
-      area: Chernihiv
+    area: Chernihiv
 
 47:
   type: fixed
   code:
     area: 47
   geo:
-      area: Cherkasy
+    area: Cherkasy
 
 48:
   type: fixed
   code:
     area: 48
   geo:
-      area: Odesa
+    area: Odesa
 
 51:
   type: fixed
   code:
     area: 51
   geo:
-      area:
+    area:
 
 52:
   type: fixed
   code:
     area: 52
   geo:
-      area: Kirovohrad
+    area: Kirovohrad
 
 53:
   type: fixed
   code:
     area: 53
   geo:
-      area: Poltava
+    area: Poltava
 
 54:
   type: fixed
   code:
     area: 54
   geo:
-      area: Sumy
+    area: Sumy
 
 55:
   type: fixed
   code:
     area: 55
   geo:
-      area: Kherson
+    area: Kherson
 
 56:
   type: fixed
   code:
     area: 56
   geo:
-      area: Dnipropetrovsk
+    area: Dnipropetrovsk
 
 57:
   type: fixed
   code:
     area: 57
   geo:
-      area: Kharkiv
+    area: Kharkiv
 
 61:
   type: fixed
   code:
     area: 61
   geo:
-      area: Zaporizhzhya
+    area: Zaporizhzhya
 
 62:
   type: fixed
   code:
     area: 62
   geo:
-      area: Donetsk
+    area: Donetsk
 
 64:
   type: fixed
   code:
     area: 64
   geo:
-      area: Luhansk
+    area: Luhansk
 
 65:
   type: fixed
   code:
     area: 65
   geo:
-      area: Crimea
+    area: Crimea
 
 69:
   type: fixed
   code:
     area: 69
   geo:
-      city: Sevastopol
+    city: Sevastopol
 
 
 # Non-geographic number – mobile services

@@ -104,7 +104,7 @@ class ZonesLoader
             } elseif ($country) {
                 // support short notation <dialing or area code or any other range> : <country alpha-2 code>
                 $country = array(
-                    '~' => array('country' => $country)
+                    '~' => array('geo' => array('country_alpha2' => $country))
                 );
             } else {
                 $country = false; // no country value was provided
