@@ -2,15 +2,15 @@
 
 namespace SMSKrank;
 
-use SMSKrank\Exceptions\GatewayFactoryException;
+use SMSKrank\Utils\AbstractLoader;
 
 class GatewayFactory
 {
-    private $gateways;
+    private $gateways_loader;
 
-    public function __construct(array $gateways)
+    public function __construct(AbstractLoader $gateways_loader)
     {
-        $this->gateways = $gateways;
+        $this->gateways_loader = $gateways_loader;
     }
 
     /**
@@ -22,13 +22,9 @@ class GatewayFactory
      */
     public function getGateway($gate_name)
     {
-        if (!isset($this->gateways[$gate_name])) {
-            throw new GatewayFactoryException("Gateway doesn't exists");
-        }
-
-        $gate_config = $this->gateways[$gate_name];
-
-        $r = new \ReflectionClass($gate_config['class']);
-        return $r->newInstanceArgs($gate_config['args']);
+        $config = $this->gateways_loader->get($gate_name);
+        // TODO: store initialized objects
+        $r = new \ReflectionClass($config['class']);
+        return $r->newInstanceArgs($config['args']);
     }
 }

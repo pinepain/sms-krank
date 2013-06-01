@@ -1,0 +1,6 @@
+EchoMarlboroMan:
+  class: '\SMSKrank\Helpers\Gateways\EchoDude'
+  args:
+    name: 'EchoMarlboroMan'
+    balance: 2.50
+    price: 1.99

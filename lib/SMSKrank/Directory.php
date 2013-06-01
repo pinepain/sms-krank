@@ -3,7 +3,7 @@
 namespace SMSKrank;
 
 use SMSKrank\Exceptions\DirectoryException;
-use SMSKrank\Utils\Exceptions\ZonesLoaderException;
+use SMSKrank\Utils\Exceptions\LoaderException;
 use SMSKrank\Utils\ZonesLoader;
 
 class Directory
@@ -29,7 +29,7 @@ class Directory
         try {
             $zone_desc = $this->zones_loader->get($number[0]);
 
-        } catch (ZonesLoaderException $e) {
+        } catch (LoaderException $e) {
             throw new DirectoryException('Phone number calling code is not supported');
         }
 

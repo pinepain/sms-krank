@@ -4,73 +4,51 @@ namespace SMSKrank\Utils;
 
 use Symfony\Component\Yaml\Yaml;
 
-use SMSKrank\Utils\Exceptions\ZonesLoaderException;
+use SMSKrank\Utils\Exceptions\LoaderException;
 
 
 //TODO: extends AbstractLoader, unit tests
-class ZonesLoader
+class ZonesLoader extends AbstractLoader
 {
-    public $zones = array();
-    private $source;
-
     public function __construct($source = null)
     {
         if (!$source) {
             $source = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', '..', 'data', 'zones'));
         }
 
-        if (!file_exists($source)) {
-            throw new ZonesLoaderException('Source directory does not exists');
-        }
-
         if (is_file($source)) {
-            throw new ZonesLoaderException('Source directory is file');
+            throw new LoaderException("Zones source is file");
         }
 
-        $this->source = $source;
+        parent::__construct($source);
     }
 
-    public function load($zone = null)
+    public function load($zone = null, $one_shot = false)
     {
         if (null === $zone) {
             $dir_content = array_filter(
-                scandir($this->source),
+                scandir($this->getSource()),
                 function ($val) {
                     return is_numeric($val) && $val > 1 && $val < 10;
                 }
             );
 
+            $loaded = array();
+
             foreach ($dir_content as $zone) {
-                $this->load($zone);
+                $loaded = array_merge($loaded, $this->load($zone, $one_shot));
             }
-            return $this->zones;
+
+            return $loaded;
         }
 
-        $loaded = $this->loadZoneDescription($zone, '!index');
-
-        unset($this->zones[$zone]); // cleanup old zone data, if any
-
-        return $this->zones += $loaded;
+        return parent::load($zone . DIRECTORY_SEPARATOR . '!index', $one_shot);
     }
 
-
-    private function loadZoneDescription($zone, $desc_name)
+    protected function postLoad(array $loaded, $what)
     {
-        $desc_file = $this->source . DIRECTORY_SEPARATOR . $zone . DIRECTORY_SEPARATOR . $desc_name . '.yaml';
-
-        if (!file_exists($desc_file)) {
-            throw new ZonesLoaderException("Zone #{$zone} file '{$desc_name}.yaml' does not exists");
-        }
-
-        if (!is_readable($desc_file)) {
-            throw new ZonesLoaderException("Zone #{$zone} file '{$desc_name}.yaml' is not readable");
-        }
-
-        $desc_data = Yaml::parse(file_get_contents($desc_file));
-
-        return $this->expandZoneData($desc_data);
+        return $this->expandZoneData($loaded);
     }
-
 
     private function expandZoneData(array $data, $prefix = '')
     {
@@ -78,18 +56,24 @@ class ZonesLoader
         $out_props = array();
 
         // get out all props from current level
-
-        foreach ($data as $code => $value) {
-            $_code = str_replace(array('-', ' '), '', $code);
-
-            if (!is_numeric($_code)) {
-                $out_props[$code] = $value;
-                unset($data[$code]);
-            }
-        }
+//
+//        foreach ($data as $code => $value) {
+//            $_code = str_replace(array('+', '-', '/', ' ', '(', ')'), '', $code);
+//
+//            if (!is_numeric($_code)) {
+//                $out_props[$code] = $value;
+//                unset($data[$code]);
+//            }
+//        }
 
         foreach ($data as $code => $country) {
             $code = (string)$code;
+            $code = str_replace(array('+', '-', '/', ' ', '(', ')'), '', $code);
+
+            if (!is_numeric($code)) {
+                $out_props[$code] = $country;
+                continue;
+            }
 
             // process numbers and ranges
 
@@ -100,7 +84,7 @@ class ZonesLoader
             } elseif ($country === '++') {
                 // support sub-zone files
                 $_prefix = $prefix . $code;
-                $country = $this->loadZoneDescription($_prefix[0], $_prefix);
+                $country = parent::load($_prefix[0] . DIRECTORY_SEPARATOR . $_prefix, true);
             } elseif ($country === '==') {
                 $country = array();
             } elseif ($country) {
@@ -118,7 +102,7 @@ class ZonesLoader
                 $_code = explode('-', $_code);
 
                 if (sizeof($_code) != 2) {
-                    throw new ZonesLoaderException("Invalid range in {$code}");
+                    throw new LoaderException("Invalid range in {$code}");
                 }
 
                 list ($start, $end) = $_code;
@@ -128,11 +112,11 @@ class ZonesLoader
                 // TODO: start and end should be in [0, 9], start < end, when range is [0,9] do nothing, just set props to current level
 
                 if ($start > 9 || $end > 9) {
-                    throw new ZonesLoaderException("Invalid range in {$code} (start and end should be less then 10)");
+                    throw new LoaderException("Invalid range in {$code} (start and end should be less then 10)");
                 }
 
                 if ($size < 0) {
-                    throw new ZonesLoaderException("Invalid range in {$code} (start is equal or greater than end)");
+                    throw new LoaderException("Invalid range in {$code} (start is equal or greater than end)");
                 }
 
                 if ($size == 10) {
@@ -164,9 +148,7 @@ class ZonesLoader
             }
         }
 
-
         ksort($out);
-
 
         if (!empty($out_props)) {
             ksort($out_props);
@@ -237,14 +219,5 @@ class ZonesLoader
         }
 
         return $existent;
-    }
-
-    public function get($zone)
-    {
-        if (!isset($this->zones[$zone])) {
-            $this->load($zone);
-        }
-
-        return $this->zones[$zone];
     }
 }

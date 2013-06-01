@@ -1,17 +1,17 @@
 <?php
 /**
- *  http://sms-uslugi.ru
+ * @url http://sms-uslugi.ru
  */
 
 namespace SMSKrank\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
 
-use SMSKrank\GatewayInterface;
+use SMSKrank\GatewayDetailedInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class SmsUslugiRu implements GatewayInterface
+class SmsUslugiRu implements GatewayDetailedInterface
 {
     private $login;
     private $password;

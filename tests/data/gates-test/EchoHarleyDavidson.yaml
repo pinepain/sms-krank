@@ -1,0 +1,6 @@
+EchoHarleyDavidson:
+  class: '\SMSKrank\Helpers\Gateways\EchoDude'
+  args:
+    name: 'Harley Davidson'
+    balance: 100.0
+    price: 0.04

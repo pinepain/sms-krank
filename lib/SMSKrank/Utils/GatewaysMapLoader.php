@@ -4,7 +4,8 @@ namespace SMSKrank\Utils;
 
 use SMSKrank\Utils\Exceptions\LoaderException;
 
-class GatewaysMapLoader extends AbstractLoader {
+class GatewaysMapLoader extends AbstractLoader
+{
     private $gates_loader;
 
     public function __construct($source, GatewaysLoader $gateways_loader = null)
@@ -13,16 +14,9 @@ class GatewaysMapLoader extends AbstractLoader {
         $this->gates_loader = $gateways_loader;
     }
 
-
     protected function postLoad(array $loaded, $what)
     {
-        if (count($loaded) != 1) {
-            throw new LoaderException("It is expected to have one element in '{$what}' container");
-        }
-
-//        $current = current($loaded);
-
-        foreach(current($loaded) as $gate_name => $params) {
+        foreach ($loaded as $gate_name => $params) {
             if (!is_array($params)) {
                 if ('any' === $params) {
                     $loaded[$gate_name] = null;
@@ -38,7 +32,6 @@ class GatewaysMapLoader extends AbstractLoader {
             }
         }
 
-        return $loaded;
+        return array($what => $loaded);
     }
-
 }

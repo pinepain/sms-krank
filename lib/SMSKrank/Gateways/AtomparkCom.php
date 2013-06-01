@@ -1,17 +1,17 @@
 <?php
 /**
- * @author pba <bogdan.padalko@gmail.com>
+ * @url http://atompark.com/
  */
 
 namespace SMSKrank\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
 
-use SMSKrank\GatewayInterface;
+use SMSKrank\GatewayDetailedInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class AtomparkCom implements GatewayInterface
+class AtomparkCom implements GatewayDetailedInterface
 {
     private $version = '3.0';
     private $gate = 'http://atompark.com/api/sms';

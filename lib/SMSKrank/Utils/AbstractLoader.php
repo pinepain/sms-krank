@@ -19,7 +19,14 @@ abstract class AbstractLoader
         $this->source = $source;
     }
 
-    public function load($what = null)
+    /**
+     * @param null $what     Container name to load
+     * @param bool $one_shot Do not store result, just return it
+     *
+     * @return array
+     * @throws Exceptions\LoaderException
+     */
+    public function load($what = null, $one_shot = false)
     {
         if (null === $what) {
 
@@ -76,20 +83,27 @@ abstract class AbstractLoader
             throw new LoaderException("Garbage data after parsing in '{$what}' container");
         }
 
-        $this->container = array_merge($this->container, $parsed);
+        if ($one_shot) {
+            return $parsed;
+        } else {
+            $this->container = array_merge($this->container, $parsed);
 
-        ksort($this->container);
+            ksort($this->container);
 
-        return $this->container;
+            return $this->container;
+        }
     }
 
     public function get($what = null)
     {
-        if (!isset($this->container[$what])) {
-            $this->load($what);
+        if (null != $what) {
+            if (!isset($this->container[$what])) {
+                $this->load($what);
+            }
+            return $this->container[$what];
         }
 
-        return $this->container[$what];
+        return $this->container;
     }
 
     public function has($what)
@@ -124,5 +138,10 @@ abstract class AbstractLoader
     protected function postLoad(array $loaded, $what)
     {
         return $loaded;
+    }
+
+    final protected function getSource()
+    {
+        return $this->source;
     }
 }

@@ -6,6 +6,7 @@ use SMSKrank\Utils\GatewaysLoader;
 
 class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 {
+    private $providerExpectedException = '\SMSKrank\Utils\Exceptions\LoaderException';
 
     public function providerSources()
     {
@@ -25,7 +26,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 
         return array(
             array(__DIR__ . '/../../../data/gates/first.yaml', "Source directory is file", 'second'),
-            array($dir . '/garbage.yaml', "Garbage in group file 'garbage'"),
+            array($dir . '/garbage.yaml', "Garbage in container file 'garbage'"),
             array($dir . '/invalid-args.yaml', "Gateway class arguments has wrong type"),
             array($dir . '/invalid-class.yaml', "Gateway class doesn't exists"),
             array($dir . '/missed-args.yaml', "Missed gateway arguments"),
@@ -108,7 +109,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     public function testConstructor($file, $message)
     {
         if ($message) {
-            $this->setExpectedException('\SMSKrank\Utils\Exceptions\GatesLoaderException', $message);
+            $this->setExpectedException($this->providerExpectedException, $message);
         }
 
         $d = new GatewaysLoader($file);
@@ -123,7 +124,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadInvalid($file, $message, $group = null)
     {
-        $this->setExpectedException('\SMSKrank\Utils\Exceptions\GatesLoaderException', $message);
+        $this->setExpectedException($this->providerExpectedException, $message);
 
         $d = new GatewaysLoader($file);
 
