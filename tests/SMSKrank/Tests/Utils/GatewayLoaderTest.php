@@ -10,7 +10,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function providerSources()
     {
-        $dir = __DIR__ . '/../../../data/gates';
+        $dir = __DIR__ . '/../../../data/gates/gates-valid';
 
         return array(
             array($dir . '/nonexistent.file', "Source does not exists"),
@@ -22,10 +22,10 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function providerInvalidYamls()
     {
-        $dir = __DIR__ . '/../../../data/gates-invalid';
+        $dir = __DIR__ . '/../../../data/gates/gates-invalid';
 
         return array(
-            array(__DIR__ . '/../../../data/gates/first.yaml', "Source directory is file", 'second'),
+            array(__DIR__ . '/../../../data/gates/gates-valid/first.yaml', "Source directory is file", 'second'),
             array($dir . '/garbage.yaml', "Garbage in container file 'garbage'"),
             array($dir . '/invalid-args.yaml', "Gateway class arguments has wrong type"),
             array($dir . '/invalid-class.yaml', "Gateway class doesn't exists"),
@@ -38,7 +38,8 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function providerValidYamls()
     {
-        $dir = __DIR__ . '/../../../data/gates';
+        $dir          = __DIR__ . '/../../../data/gates/gates-valid';
+        $dir_override = __DIR__ . '/../../../data/gates/gates-override';
 
         $first = array(
             'class' => '\SMSKrank\Helpers\Gateways\BlackHole',
@@ -78,7 +79,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
             array($dir . '/ignored.yml', array('BlackHole-ignored-ext' => $ignored)),
             array($dir . '/', array('BlackHole-first' => $first, 'BlackHole-second' => $second)),
             array(
-                $dir . '-override/',
+                $dir_override,
                 array(
                     'BlackHole-first'        => $first_joint_override,
                     'BlackHole-first-joint'  => $first_joint,
@@ -104,7 +105,7 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers                   \SMSKrank\Utils\GatewaysLoader::__construct
      *
-     * @dataProvider providerSources
+     * @dataProvider             providerSources
      */
     public function testConstructor($file, $message)
     {
