@@ -1,0 +1,14 @@
+EchoPaulBunyan:
+  geo:
+    province_postal: BC
+  operator: FictionalOne
+  type : mobile
+
+EchoMarlboroMan:
+  geo:
+      province_postal: QC
+
+  operator: FictionalTwo
+  type : landline
+
+EchoChuckNorris: any

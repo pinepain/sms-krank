@@ -1,0 +1,72 @@
+# http://en.wikipedia.org/wiki/List_of_country_calling_codes#Zone_1:_North_American_Numbering_Plan_Area
+# http://en.wikipedia.org/wiki/List_of_Florida_area_codes
+# http://en.wikipedia.org/wiki/List_of_Nevada_area_codes
+# http://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#By_state.2C_province_or_country
+
+#+1: -- # cleanup zone
+
+# US, FL
++1 239: # Southwest coast: all of Lee County, Collier County, mainland Monroe County excluding Florida Keys; includes Cape Coral, Fort Myers, Naples, Everglades
+  geo:
+    country_alpha2: US
+    state_ansi: FL
+  operator: FictionalOne
+
+  555 51:
+    type: landline
+  555 52:
+    type: mobile
+
++1 305: # All of Miami-Dade County and the Florida Keys of Monroe County: Miami, Homestead, Coral Gables, Key West; overlaid by 786 for all of Miami-Dade
+  geo:
+    country_alpha2: US
+    state_ansi: FL
+  operator: FictionalTwo
+
+  555 51:
+    type: landline
+  555 52:
+    type: mobile
+
++1 555:
+  geo:
+    country_alpha2: US
+    location: area 52
+
+
+#+1 775: #All of Nevada outside the southeastern corner, including Reno and Carson City
+#  geo:
+#    country_alpha2: US
+#    state_ansi: NV
+
+
+#Canada, British Columbia (BC)
++1 236:
+  geo:
+    country_alpha2: CA
+    province_postal: BC
+
+  operator: FictionalOne
+
+  555 51:
+    type: landline
+  555 52:
+    type: mobile
+
+#Canada, Quebec (QC)
++1 418:
+  geo:
+    country_alpha2: CA
+    province_postal: QC
+
+  operator: FictionalTwo
+
+  555 51:
+    type: landline
+  555 52:
+    type: mobile
+
++1 111:
+  geo:
+    country_alpha2: CA
+    location: area 52

@@ -4,7 +4,6 @@ namespace SMSKrank\Utils;
 
 use Symfony\Component\Yaml\Yaml;
 
-//use SMSKrank\Utils\Exceptions\GatesLoaderException;
 use SMSKrank\Utils\Exceptions\LoaderException;
 
 

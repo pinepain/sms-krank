@@ -28,6 +28,7 @@ class Directory
 
         try {
             $zone_desc = $this->zones_loader->get($number[0]);
+            var_dump($zone_desc); die;
 
         } catch (LoaderException $e) {
             throw new DirectoryException('Phone number calling code is not supported');

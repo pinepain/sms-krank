@@ -14,7 +14,7 @@ class EchoDude implements GatewayInterface
     private $balance;
     private $price;
 
-    public function __construct($name, $balance, $price, $format = '{phone} - {message} - {schedule}')
+    public function __construct($name, $balance, $price, $format = '{name}: {phone} - "{message}" {schedule}')
     {
         $this->name    = $name;
         $this->format  = $format;
@@ -31,12 +31,16 @@ class EchoDude implements GatewayInterface
 
         $template = $this->format;
 
+        $template = str_replace('{name}', $this->name, $template);
         $template = str_replace('{phone}', $number->getNumber(), $template);
+
         $template = str_replace(
             '{schedule}',
-            $schedule ? $schedule->format(\DateTime::ISO8601) : 'immediately',
+            $schedule ? 'at ' . $schedule->format(\DateTime::ISO8601) : 'immediately',
             $template
         );
+
+        // message may contain any data, even template placeholders, so process it aat last
         $template = str_replace('{message}', $message->getText(), $template);
 
         echo $template;

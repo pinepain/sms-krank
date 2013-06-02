@@ -100,6 +100,7 @@ abstract class AbstractLoader
             if (!isset($this->container[$what])) {
                 $this->load($what);
             }
+
             return $this->container[$what];
         }
 

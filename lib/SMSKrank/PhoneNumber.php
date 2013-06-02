@@ -20,8 +20,4 @@ class PhoneNumber {
     public function getNumber() {
         return $this->number;
     }
-
-    public function getZone() {
-        return $this->number[0];
-    }
 }

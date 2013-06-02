@@ -1,0 +1,15 @@
+EchoHarleyDavidson:
+  geo:
+    country_alpha2 : US
+    state_ansi: FL
+  operator: FictionalOne
+  type : mobile
+
+EchoMarlboroMan:
+  geo:
+      country_alpha2 : US
+      state_ansi: FL
+  operator: FictionalTwo
+  type : landline
+
+EchoChuckNorris: any

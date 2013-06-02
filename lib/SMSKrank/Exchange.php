@@ -2,14 +2,12 @@
 
 namespace SMSKrank;
 
-
-// TODO: implement gateway interface
 use SMSKrank\Exceptions\ExchangeException;
 use SMSKrank\Exceptions\GatewayException;
 use SMSKrank\Utils\AbstractLoader;
 use SMSKrank\Utils\Exceptions\LoaderException;
 
-class Exchange
+class Exchange implements GatewayInterface
 {
     private $maps_loader;
     private $gateway_factory;
@@ -24,7 +22,7 @@ class Exchange
 
     public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
-        $detailed_phone_number = $this->directory->getPhoneNumberDetailed($number);
+        $detailed_phone_number = $this->directory->getPhoneNumberDetailed($number->getNumber());
 
         $gateways = $this->maps_loader->get($detailed_phone_number->getGeo('country_alpha2'));
 
@@ -52,7 +50,7 @@ class Exchange
             }
 
             try {
-                $gate = $this->gateway_factory->getGateway($gate_name);
+                $gate  = $this->gateway_factory->getGateway($gate_name);
                 $price = $gate->send($detailed_phone_number, $message, $schedule);
                 break;
             } catch (LoaderException $e) {
