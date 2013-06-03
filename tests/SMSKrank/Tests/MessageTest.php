@@ -4,9 +4,11 @@ namespace SMSKrank\Tests;
 
 use SMSKrank\Message;
 
-class MessageTest extends \PHPUnit_Framework_TestCase {
+class MessageTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function providerMessage() {
+    public function providerMessage()
+    {
         return array(
             // 7-bit encoding
             array('short message', 13),
@@ -43,9 +45,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \SMSKrank\Message::__construct
-     * @covers \SMSKrank\Message::getText
-     * @covers \SMSKrank\Message::getLength
+     * @covers       \SMSKrank\Message::__construct
+     * @covers       \SMSKrank\Message::getText
+     * @covers       \SMSKrank\Message::getLength
      *
      * @dataProvider providerMessage
      */

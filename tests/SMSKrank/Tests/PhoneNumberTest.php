@@ -4,7 +4,8 @@ namespace SMSKrank\Tests;
 
 use SMSKrank\PhoneNumber;
 
-class PhoneNumberTest extends \PHPUnit_Framework_TestCase {
+class PhoneNumberTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @cover \SMSKrank\PhoneNumber::__construct

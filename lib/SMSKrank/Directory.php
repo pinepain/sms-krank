@@ -33,11 +33,7 @@ class Directory
             throw new DirectoryException('Phone number calling code is not supported');
         }
 
-        $props = $this->getNumberProps(
-            substr($number, 1),
-            $zone_desc,
-            $number[0]
-        );
+        $props = $this->getNumberProps(substr($number, 1), $zone_desc, $number[0]);
 
         $out = array();
 
@@ -57,7 +53,8 @@ class Directory
 
     }
 
-    private function validateNumber($number, array $rules) {
+    private function validateNumber($number, array $rules)
+    {
         if (isset($rules['icc']) && isset($rules['ncc']) && strlen($number) != $rules['icc'] + $rules['ncc']) {
             throw new DirectoryException("Validation failed for '{$number}' phone number (invalid length)");
         }

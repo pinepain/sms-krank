@@ -2,12 +2,11 @@
 
 namespace SMSKrank\Utils;
 
-use Symfony\Component\Yaml\Yaml;
-
-use SMSKrank\Utils\Exceptions\LoaderException;
-
 
 //TODO: extends AbstractLoader, unit tests
+use SMSKrank\Utils\Exceptions\LoaderException;
+use Symfony\Component\Yaml\Yaml;
+
 class ZonesLoader extends AbstractLoader
 {
     public function __construct($source = null)

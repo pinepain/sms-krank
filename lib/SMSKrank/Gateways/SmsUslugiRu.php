@@ -6,7 +6,6 @@
 namespace SMSKrank\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
-
 use SMSKrank\GatewayDetailedInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
@@ -18,7 +17,7 @@ class SmsUslugiRu implements GatewayDetailedInterface
 
     public function __construct($login, $password)
     {
-        $this->login = $login;
+        $this->login    = $login;
         $this->password = $password;
 
     }
@@ -26,10 +25,10 @@ class SmsUslugiRu implements GatewayDetailedInterface
     public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
         $args = array(
-            'login' => $this->login,
-            'password' => $this->password,
-            'txt' => $message->getText(),   // TODO: text should be UTF-8 encoded
-            'to' => $number->getNumber(),
+            'login'        => $this->login,
+            'password'     => $this->password,
+            'txt'          => $message->getText(), // TODO: text should be UTF-8 encoded
+            'to'           => $number->getNumber(),
             'onlydelivery' => 1
         );
 
@@ -60,11 +59,11 @@ class SmsUslugiRu implements GatewayDetailedInterface
     public function getBalance()
     {
         $args = array(
-            'login' => $this->login,
+            'login'    => $this->login,
             'password' => $this->password,
         );
 
-        $res = file_get_contents("https://lcab.sms-uslugi.ru/lcabApi/info.php?" . http_build_query($args));
+        $res  = file_get_contents("https://lcab.sms-uslugi.ru/lcabApi/info.php?" . http_build_query($args));
         $json = json_decode($res, true);
 
         if (!is_array($json) || !isset($json['account'])) {

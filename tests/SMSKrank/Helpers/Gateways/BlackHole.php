@@ -2,14 +2,14 @@
 
 namespace SMSKrank\Helpers\Gateways;
 
-use SMSKrank\PhoneNumber;
-use SMSKrank\Message;
 use SMSKrank\GatewayInterface;
+use SMSKrank\Message;
+use SMSKrank\PhoneNumber;
 
 class BlackHole implements GatewayInterface
 {
 
-    public function __construct($login, $password='default')
+    public function __construct($login, $password = 'default')
     {
     }
 

@@ -2,8 +2,8 @@
 
 namespace SMSKrank\Utils;
 
-use Symfony\Component\Yaml\Yaml;
 use SMSKrank\Utils\Exceptions\LoaderException;
+use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractLoader
 {

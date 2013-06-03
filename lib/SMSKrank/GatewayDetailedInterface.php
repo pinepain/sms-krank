@@ -2,7 +2,8 @@
 
 namespace SMSKrank;
 
-interface GatewayDetailedInterface extends GatewayInterface {
+interface GatewayDetailedInterface extends GatewayInterface
+{
     /**
      * @return float | null Account balance, if available. Null otherwise
      */

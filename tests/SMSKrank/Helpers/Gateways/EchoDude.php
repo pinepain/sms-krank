@@ -3,9 +3,9 @@
 namespace SMSKrank\Helpers\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\PhoneNumber;
-use SMSKrank\Message;
 use SMSKrank\GatewayInterface;
+use SMSKrank\Message;
+use SMSKrank\PhoneNumber;
 
 class EchoDude implements GatewayInterface
 {

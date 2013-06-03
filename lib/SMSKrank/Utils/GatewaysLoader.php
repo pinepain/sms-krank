@@ -2,12 +2,11 @@
 
 namespace SMSKrank\Utils;
 
-use Symfony\Component\Yaml\Yaml;
-
-use SMSKrank\Utils\Exceptions\LoaderException;
-
 
 //TODO: extends AbstractLoader, unit tests
+use SMSKrank\Utils\Exceptions\LoaderException;
+use Symfony\Component\Yaml\Yaml;
+
 class GatewaysLoader extends AbstractLoader
 {
     private $gate_interface_class = "\\SMSKrank\\GatewayInterface";
@@ -40,14 +39,15 @@ class GatewaysLoader extends AbstractLoader
             }
 
             $config_args = $gate_params['args'];
-            $args = array();
+            $args        = array();
 
             foreach ($gate->getConstructor()->getParameters() as $param) {
 
                 if (!isset($config_args[$param->getName()])) {
 
                     if (!$param->isDefaultValueAvailable()) {
-                        throw new LoaderException("Missed argument '{$param->getName()}' for  '{$this->gate_interface_class}' in '{$gate_name}' gate description");
+                        throw new LoaderException("Missed argument '{$param->getName(
+                        )}' for  '{$this->gate_interface_class}' in '{$gate_name}' gate description");
                     }
 
                     $args[] = $param->getDefaultValue();

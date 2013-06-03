@@ -6,7 +6,6 @@
 namespace SMSKrank\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
-
 use SMSKrank\GatewayDetailedInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;

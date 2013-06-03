@@ -19,6 +19,14 @@ class PhoneNumberDetailed extends PhoneNumber
         $this->props = $props;
     }
 
+    /**
+     * @param null $field
+     *
+     * @return int|array|mixed
+     *
+     * @throws Exceptions\PhoneNumberDetailedException
+     */
+
     public function getCode($field = null)
     {
         if (null !== $field) {
@@ -32,6 +40,13 @@ class PhoneNumberDetailed extends PhoneNumber
         return $this->codes;
     }
 
+    /**
+     * @param null $field
+     *
+     * @return string|array|mixed
+     *
+     * @throws Exceptions\PhoneNumberDetailedException
+     */
     public function getGeo($field = null)
     {
         if (null !== $field) {
@@ -45,11 +60,20 @@ class PhoneNumberDetailed extends PhoneNumber
         return $this->geo;
     }
 
-    public function hasProp($field) {
+    public function hasProp($field)
+    {
         return isset($this->props[$field]);
     }
 
-    public function getProp($field = null) {
+    /**
+     * @param null $field
+     *
+     * @return mixed|array
+     *
+     * @throws Exceptions\PhoneNumberDetailedException
+     */
+    public function getProp($field = null)
+    {
         if (null !== $field) {
             if (!isset($this->props[$field])) {
                 throw new PhoneNumberDetailedException("Phone number property '{$field}' doesn't exists");

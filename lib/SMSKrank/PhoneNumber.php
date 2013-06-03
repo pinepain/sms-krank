@@ -4,10 +4,12 @@ namespace SMSKrank;
 
 use SMSKrank\Exceptions\PhoneNumberException;
 
-class PhoneNumber {
+class PhoneNumber
+{
     private $number;
 
-    public function __construct($phone_number) {
+    public function __construct($phone_number)
+    {
         $phone_number = preg_replace('/[^0-9]/', '', $phone_number);
 
         if (!strlen($phone_number)) {
@@ -17,7 +19,8 @@ class PhoneNumber {
         $this->number = $phone_number;
     }
 
-    public function getNumber() {
+    public function getNumber()
+    {
         return $this->number;
     }
 }

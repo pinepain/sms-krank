@@ -2,7 +2,8 @@
 
 namespace SMSKrank;
 
-interface GatewayInterface {
+interface GatewayInterface
+{
     /**
      * @param PhoneNumber $number
      * @param Message     $message
