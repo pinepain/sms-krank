@@ -156,7 +156,7 @@ class AtomparkCom implements GatewayDetailedInterface
 
         if (isset($json['error'])) {
             // TODO: process errors here
-            var_dump($json);
+//            var_dump($json);
             throw new GatewayException('Error response: ' . $json['error']);
         } elseif (!is_array($json['result'])) {
             throw new GatewayException('Bad response body');

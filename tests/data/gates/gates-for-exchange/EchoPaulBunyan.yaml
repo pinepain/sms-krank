@@ -1,6 +1,6 @@
 EchoPaulBunyan:
   class: '\SMSKrank\Helpers\Gateways\EchoDude'
   args:
-    name: 'EchoPaulBunyan'
+    name: 'Paul Bunyan'
     balance: 100
     price: 9.99

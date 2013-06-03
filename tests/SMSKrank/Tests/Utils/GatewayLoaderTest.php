@@ -103,9 +103,9 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   \SMSKrank\Utils\GatewaysLoader::__construct
+     * @covers       \SMSKrank\Utils\GatewaysLoader::__construct
      *
-     * @dataProvider             providerSources
+     * @dataProvider providerSources
      */
     public function testConstructor($file, $message)
     {
@@ -118,8 +118,9 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers       \SMSKrank\Utils\GatewaysLoader::__construct
      * @covers       \SMSKrank\Utils\GatewaysLoader::load
-     * @covers       \SMSKrank\Utils\GatewaysLoader::validateGroupData
+     * @covers       \SMSKrank\Utils\GatewaysLoader::postLoad
      *
      * @dataProvider providerInvalidYamls
      */
@@ -137,8 +138,9 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers       \SMSKrank\Utils\GatewaysLoader::__construct
      * @covers       \SMSKrank\Utils\GatewaysLoader::load
-     * @covers       \SMSKrank\Utils\GatewaysLoader::validateGroupData
+     * @covers       \SMSKrank\Utils\GatewaysLoader::postLoad
      *
      * @dataProvider providerValidYamls
      */

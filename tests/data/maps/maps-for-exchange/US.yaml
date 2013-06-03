@@ -3,13 +3,13 @@ EchoHarleyDavidson:
     country_alpha2 : US
     state_ansi: FL
   operator: FictionalOne
-  type : mobile
+  type : landline
 
 EchoMarlboroMan:
   geo:
       country_alpha2 : US
       state_ansi: FL
   operator: FictionalTwo
-  type : landline
+  type : mobile
 
 EchoChuckNorris: any

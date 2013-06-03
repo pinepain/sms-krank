@@ -1,6 +1,6 @@
 EchoAmpelmennchen:
   class: '\SMSKrank\Helpers\Gateways\EchoDude'
   args:
-    name: 'EchoAmpelmennchen'
+    name: 'Ampelmennchen'
     balance: 1.0
     price: 0.09

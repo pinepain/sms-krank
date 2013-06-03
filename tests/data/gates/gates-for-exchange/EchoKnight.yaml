@@ -1,6 +1,6 @@
 EchoKnight:
   class: '\SMSKrank\Helpers\Gateways\EchoDude'
   args:
-    name: 'EchoKnight'
+    name: 'Knight'
     balance: 10.0
     price: 0.99

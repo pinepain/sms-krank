@@ -2,13 +2,13 @@ EchoPaulBunyan:
   geo:
     province_postal: BC
   operator: FictionalOne
-  type : mobile
+  type : landline
 
 EchoMarlboroMan:
   geo:
       province_postal: QC
 
   operator: FictionalTwo
-  type : landline
+  type : mobile
 
 EchoChuckNorris: any

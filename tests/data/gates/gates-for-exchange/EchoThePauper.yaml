@@ -1,0 +1,6 @@
+EchoThePauper:
+  class: '\SMSKrank\Helpers\Gateways\EchoDude'
+  args:
+    name: 'The Pauper'
+    balance: 0.00
+    price: 0.05

@@ -58,7 +58,7 @@ class PhoneNumberDetailed extends PhoneNumber
             return $this->props[$field];
         }
 
-        return $this->geo;
+        return $this->props;
     }
 
     public function isMobile()

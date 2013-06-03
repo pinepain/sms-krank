@@ -55,26 +55,26 @@ abstract class AbstractLoader
 
         } else {
             if (is_file($this->source)) {
-                throw new LoaderException('Source directory is file');
+                throw new LoaderException("Source directory is file ({$this->source})");
             }
 
             $container_file = $this->source . DIRECTORY_SEPARATOR . $what . '.yaml';
         }
 
-        $container_file = realpath($container_file);
+        $_container_file = realpath($container_file);
 
         if (!file_exists($container_file)) {
-            throw new LoaderException("Container file '{$what}' does not exists");
+            throw new LoaderException("Container file '{$what}' does not exists ({$container_file})");
         }
 
         if (!is_readable($container_file)) {
-            throw new LoaderException("Container file '{$what}' is not readable");
+            throw new LoaderException("Container file '{$what}' is not readable ({$_container_file})");
         }
 
         $loaded = Yaml::parse(file_get_contents($container_file));
 
         if (!is_array($loaded)) {
-            throw new LoaderException("Garbage in container file '{$what}' ({$container_file})");
+            throw new LoaderException("Garbage in container file '{$what}' ({$_container_file})");
         }
 
         $parsed = $this->postLoad($loaded, $what);
@@ -86,8 +86,7 @@ abstract class AbstractLoader
         if ($one_shot) {
             return $parsed;
         } else {
-            $this->container = array_merge($this->container, $parsed);
-
+            $this->container = $parsed + $this->container;
             ksort($this->container);
 
             return $this->container;
