@@ -12,5 +12,19 @@ The reason why you want to send thousands of sms may vary, but one of use cases 
 TODO
 ----
 
+- [ ] unit tests
+- [ ] code coverage tools (https://coveralls.io?) integration into github page
 - [ ] check gates whether they are alive and credentials are valid
+- [ ] handle message length over capacity
 
+
+Message capacity
+----------------
+```
+ Encoding | Single | Partial
+-----------------------------
+   7 bit  |  160   |  153
+   8 bit  |  140   |  134
+  16 bit  |   70   |   67
+
+```
