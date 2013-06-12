@@ -49,7 +49,7 @@ class A1SystemsRu implements GatewayInterface
 
         if (strpos($res, ':')) {
             list(, $error) = explode(':', $res);
-            throw new GatewayException($error);
+            throw new GatewayException(trim($error));
         }
 
         $id = (int)$res; // retrieve message id
