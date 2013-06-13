@@ -21,6 +21,11 @@ class ToFile implements GatewayInterface
 
     public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
+        if ($this->file_name == '/dev/null') {
+            // add null device support for non-*NIX users
+            return null;
+        }
+
         $template = $this->format;
         $schedule = $schedule ? 'at ' . $schedule->format(\DateTime::ISO8601) : 'immediately';
 
@@ -39,5 +44,7 @@ class ToFile implements GatewayInterface
 
         fwrite($fh, $template . PHP_EOL);
         fclose($fh);
+
+        return null;
     }
 }
