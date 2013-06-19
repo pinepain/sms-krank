@@ -14,13 +14,13 @@ class A1SystemsRu implements GatewayInterface
 {
     private $login;
     private $password;
-    private $short_code;
+    private $sender;
 
-    public function __construct($login, $password, $short_code)
+    public function __construct($login, $password, $sender)
     {
-        $this->login      = $login;
-        $this->password   = $password;
-        $this->short_code = $short_code;
+        $this->login    = $login;
+        $this->password = $password;
+        $this->sender   = $sender;
     }
 
     /**
@@ -40,7 +40,7 @@ class A1SystemsRu implements GatewayInterface
             'login'     => $this->login,
             'password'  => $this->password,
             'msisdn'    => $number->getNumber(),
-            'shortcode' => $this->short_code,
+            'shortcode' => $this->sender,
             'text'      => $message->getText(),
         );
 
