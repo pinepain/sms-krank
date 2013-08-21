@@ -1,4 +1,4 @@
-missed-class:
+wrong-name-doesnt-match:
   args:
     login: 'missed-class'
     password: 'missed-class'

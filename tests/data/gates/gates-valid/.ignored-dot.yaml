@@ -1,4 +1,4 @@
-BlackHole-ignored-dot:
+.ignored-dot:
   class: '\SMSKrank\Helpers\Gateways\BlackHole'
   args:
     login: 'login-ignored'

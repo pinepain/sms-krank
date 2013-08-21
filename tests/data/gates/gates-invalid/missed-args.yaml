@@ -1,2 +1,2 @@
-invalid-missed-args:
+missed-args:
   class: '\SMSKrank\Helpers\Gateways\BlackHole'

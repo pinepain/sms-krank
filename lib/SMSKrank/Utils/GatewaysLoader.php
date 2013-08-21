@@ -2,7 +2,6 @@
 
 namespace SMSKrank\Utils;
 
-
 //TODO: extends AbstractLoader, unit tests
 use SMSKrank\Utils\Exceptions\LoaderException;
 use Symfony\Component\Yaml\Yaml;
@@ -14,6 +13,14 @@ class GatewaysLoader extends AbstractLoader
     protected function postLoad(array $loaded, $what)
     {
         $out = array();
+
+        if (sizeof($loaded) != 1) {
+            throw new LoaderException("One file - one gateway");
+        }
+
+        if (!isset($loaded[$what])) {
+            throw new LoaderException("Wrong gateway name in file");
+        }
 
         foreach ($loaded as $gate_name => $gate_params) {
             if (!isset($gate_params['class'])) {

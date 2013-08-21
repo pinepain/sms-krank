@@ -1,4 +1,4 @@
-BlackHole-first:
+missed-arg-in-args:
   class: '\SMSKrank\Helpers\Gateways\BlackHole'
   args:
     password: 'test-first'

@@ -1,0 +1,10 @@
+first:
+  class: '\SMSKrank\Helpers\Gateways\BlackHole'
+  args:
+    login: 'login-first-joint'
+    password: 'pswd-first-joint'
+
+second:
+  class: '\SMSKrank\Helpers\Gateways\BlackHole'
+  args:
+    login: 'login-second-joint'

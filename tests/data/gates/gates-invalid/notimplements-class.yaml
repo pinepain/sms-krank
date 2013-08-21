@@ -1,4 +1,4 @@
-invalid-missed-class:
+notimplements-class:
   class: \SMSKrank\Helpers\Gateways\DoesNotImplement
   args:
     login: 'missed-class'

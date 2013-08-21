@@ -31,15 +31,16 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
             array($dir . '/invalid-class.yaml', "Gateway class doesn't exists"),
             array($dir . '/missed-args.yaml', "Missed gateway arguments"),
             array($dir . '/missed-class.yaml', "Missed gateway class"),
+            array($dir . '/mutiple-gates.yaml', "One file - one gate"),
             array($dir . '/notimplements-class.yaml', "doesn't implement standard gate interface"),
             array($dir . '/missed-arg-in-args.yaml', "Missed argument 'login'"),
+            array($dir . '/wrong-name.yaml', "Wrong gateway name in file"),
         );
     }
 
     public function providerValidYamls()
     {
-        $dir          = __DIR__ . '/../../../data/gates/gates-valid';
-        $dir_override = __DIR__ . '/../../../data/gates/gates-override';
+        $dir = __DIR__ . '/../../../data/gates/gates-valid';
 
         $first = array(
             'class' => '\SMSKrank\Helpers\Gateways\BlackHole',
@@ -55,7 +56,6 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
             'class' => '\SMSKrank\Helpers\Gateways\BlackHole',
             'args'  => array('login-ignored', 'paswd-ignored')
         );
-
 
         $first_joint = array(
             'class' => '\SMSKrank\Helpers\Gateways\BlackHole',
@@ -73,20 +73,11 @@ class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
         );
 
         return array(
-            array($dir . '/first.yaml', array('BlackHole-first' => $first)),
-            array($dir . '/second.yaml', array('BlackHole-second' => $second)),
-            array($dir . '/.ignored.yaml', array('BlackHole-ignored-dot' => $ignored)),
-            array($dir . '/ignored.yml', array('BlackHole-ignored-ext' => $ignored)),
-            array($dir . '/', array('BlackHole-first' => $first, 'BlackHole-second' => $second)),
-            array(
-                $dir_override,
-                array(
-                    'BlackHole-first'        => $first_joint_override,
-                    'BlackHole-first-joint'  => $first_joint,
-                    'BlackHole-second'       => $second,
-                    'BlackHole-second-joint' => $second_joint,
-                )
-            ),
+            array($dir . '/first.yaml', array('first' => $first)),
+            array($dir . '/second.yaml', array('second' => $second)),
+            array($dir . '/.ignored-dot.yaml', array('.ignored-dot' => $ignored)),
+            array($dir . '/ignored-ext.yml', array('ignored-ext' => $ignored)),
+            array($dir . '/', array('first' => $first, 'second' => $second)),
         );
     }
 

@@ -1,4 +1,4 @@
-BlackHole-first:
+first:
   class: '\SMSKrank\Helpers\Gateways\BlackHole'
   args:
     password: 'pswd-first'
