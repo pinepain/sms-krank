@@ -55,11 +55,6 @@ class Exchange implements GatewayInterface
 
                 $intersection = $this->array_intersect_assoc_recursive($required_props, $phone_props);
 
-//                var_dump($required_props);
-//                var_dump($detailed_phone_number);
-//                var_dump($intersection);
-//                echo '-----------------------------', PHP_EOL;
-
                 if ($required_props !== $intersection) {
                     continue; // no match, try the next one
                 }

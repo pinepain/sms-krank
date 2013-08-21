@@ -144,8 +144,7 @@ class AtomparkCom implements GatewayInterface
 
         $args['sum'] = md5($sum);
 
-        $url = "{$this->gate}/{$this->version}/{$action}?" . http_build_query($args);
-//        var_dump($url);
+        $url  = "{$this->gate}/{$this->version}/{$action}?" . http_build_query($args);
         $res  = file_get_contents($url);
         $json = json_decode($res, true);
 
@@ -155,7 +154,6 @@ class AtomparkCom implements GatewayInterface
 
         if (isset($json['error'])) {
             // TODO: process errors here
-//            var_dump($json);
             throw new GatewayException('Error response: ' . $json['error']);
         } elseif (!is_array($json['result'])) {
             throw new GatewayException('Bad response body');
