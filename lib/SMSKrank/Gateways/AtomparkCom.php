@@ -90,7 +90,7 @@ class AtomparkCom implements GatewayInterface
 
         if ($schedule) {
             // NOTE: this gate traits date timezone as your location provided in cabinet
-            $args['dateTimeSend'] = $schedule->format("Y-m-d H:i:s");
+            $args['datetime'] = $schedule->format("Y-m-d H:i:s");
         }
 
         $json = $this->call('sendSMS', $args);
