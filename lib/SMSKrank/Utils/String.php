@@ -40,4 +40,9 @@ class String
 
         return $string;
     }
+
+    public static function isASCII($string)
+    {
+        return (preg_match('/[^\x20-\x7f]/', $string) == 0);
+    }
 }

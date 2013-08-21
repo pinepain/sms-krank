@@ -25,13 +25,17 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
     public function providerLongMessages()
     {
+        $latin    = str_repeat('long message is here', 30);
+        $cyrillic = str_repeat('Длинное сообщение здесь', 30);
+
         return array(
-            array('long message is here', 4, '', 4),
-            array('long message is here', 5, '', 4),
-            array('long message is here', 6, '', 6),
-            array('long message is here', 4, '...', 4),
-            array('long message is here', 5, '...', 5),
-            array('long message is here', 6, '...', 6),
+            array($latin, 1, '', 160 * 1),
+            array($latin, 2, '', 160 * 2),
+            array($latin, 3, '', 160 * 3),
+
+            array($cyrillic, 1, '...', 140 * 1 - 1), // -1 for whitespace
+            array($cyrillic, 2, '...', 140 * 2 - 1), // -1 for whitespace
+            array($cyrillic, 3, '...', 140 * 3),
         );
     }
 
@@ -90,7 +94,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new Message($message);
         $obj->options()->set('compact', false);
-        $obj->options()->set('max-length', false);
+        $obj->options()->set('chunks', false);
 
         $this->assertEquals($message, $obj->getText(false));
     }
@@ -104,7 +108,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     public function testGetTextCompact($message, $compact)
     {
         $obj = new Message($message);
-        $obj->options()->set('max-length', false);
+        $obj->options()->set('chunks', false);
 
         $this->assertEquals($compact, $obj->getText());
     }
@@ -118,7 +122,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     public function testGetPattern($message, $compiled, $arguments)
     {
         $obj = new Message($message, $arguments);
-        $obj->options()->set('max-length', false);
+        $obj->options()->set('chunks', false);
 
         $this->assertEquals($message, $obj->getPattern());
     }
@@ -132,7 +136,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     public function testGetArguments($message, $compiled, $arguments)
     {
         $obj = new Message($message, $arguments);
-        $obj->options()->set('max-length', false);
+        $obj->options()->set('chunks', false);
 
         $this->assertEquals($arguments, $obj->getArguments());
     }
@@ -147,7 +151,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new PlaceholdersBuilder();
         $obj     = new Message($message, $arguments, $builder);
-        $obj->options()->set('max-length', false);
+        $obj->options()->set('chunks', false);
 
         $this->assertEquals($compiled, $obj->getText());
     }
@@ -158,12 +162,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider providerLongMessages
      */
-    public function testGetTextMaxLength($message, $max_length, $pad, $output_length)
+    public function testGetTextChunk($message, $chunks, $pad, $output_length)
     {
         $obj = new Message($message);
         $obj->options()->set('compact', false);
-        $obj->options()->set('max-length', $max_length);
-        $obj->options()->set('max-length-pad', $pad);
+        $obj->options()->set('chunks', $chunks);
+        $obj->options()->set('chunks-pad', $pad);
 
         $this->assertEquals($output_length, strlen($obj->getText()));
     }

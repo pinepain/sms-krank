@@ -45,11 +45,27 @@ class Message
             $out = trim($out);
         }
 
+        // NOTE: 16bit encoded message max size is 70, but we use unicode, right?
         // limit to one message
-        $max_len = $this->options->get('max-length', 160);
+        $max_chunks = $this->options->get('chunks', 1);
 
-        if ($max_len > 0 && strlen($out) > $max_len) {
-            $out = String::limit($out, $max_len, $this->options()->get('max-length-pad', '...'));
+        $ascii_length   = 160;
+        $unicode_length = 140;
+
+        // $out = mb_convert_encoding($out, 'UTF-8'); // force convert to unicode
+
+        if ($max_chunks > 0) {
+            if (String::isASCII($out)) {
+                $max_length = $ascii_length;
+            } else {
+                $max_length = $unicode_length;
+            }
+
+            $max_length *= $max_chunks;
+
+            if (strlen($out) > $max_length) {
+                $out = String::limit($out, $max_length, $this->options()->get('chunks-pad', '...'));
+            }
         }
 
         return $out;
