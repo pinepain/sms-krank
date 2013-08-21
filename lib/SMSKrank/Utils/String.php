@@ -43,6 +43,7 @@ class String
 
     public static function isASCII($string)
     {
+//        return (mb_detect_encoding($string, 'ASCII', true) !== false);
         return (preg_match('/[^\x20-\x7f]/', $string) == 0);
     }
 }
