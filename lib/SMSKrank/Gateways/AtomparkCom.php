@@ -6,11 +6,11 @@
 namespace SMSKrank\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayDetailedInterface;
+use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class AtomparkCom implements GatewayDetailedInterface
+class AtomparkCom implements GatewayInterface
 {
     private $version = '3.0';
     private $gate = 'http://atompark.com/api/sms';
