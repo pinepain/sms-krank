@@ -1,39 +1,39 @@
 # Zone 3: Europe
 
-#+30:  GR
-#+31:  NL
-#+32:  BE
-#+33:  FR
-#+34:  ES
-#+350: GI
-#+351: PT
-#+352: LU
-#+353: IE
-#+354: IS
-#+355: AL
-#+356: MT
-#+357: CY
-#+358: FI # FI, AX ? http://en.wikipedia.org/wiki/%2B358
-#+359: BG
-#+36:  HU
-#+370: LT
-#+371: LV
-#+372: EE
-#+373: MD
-#+374: AM # AM, QN ? http://en.wikipedia.org/wiki/%2B374
-#+375: BY
-#+376: AD
-#+377: MC
-#+378: SM
-#+379: VA
++30:  GR
++31:  NL
++32:  BE
++33:  FR
++34:  ES
++350: GI
++351: PT
++352: LU
++353: IE
++354: IS
++355: AL
++356: MT
++357: CY
++358: FI # FI, AX ? http://en.wikipedia.org/wiki/%2B358
++359: BG
++36:  HU
++370: LT
++371: LV
++372: EE
++373: MD
++374: AM # AM, QN ? http://en.wikipedia.org/wiki/%2B374
++375: BY
++376: AD
++377: MC
++378: SM
++379: VA
 +380: ++
-#+381: RS
-#+382: ME
-#+385: HR
-#+386: SI
-#+387: BA
-#+388: EU
-#+389: MK
++381: RS
++382: ME
++385: HR
++386: SI
++387: BA
++388: EU
++389: MK
 #+39: # IT, VA # http://en.wikipedia.org/wiki/%2B39
 #  0-9     : IT
 #  '06698' : VA #Vatican City from rest of the world)
