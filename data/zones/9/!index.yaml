@@ -1,0 +1,41 @@
+# Zone 9: Central, South and Western Asia
+
+#+90:
+#  0-9     :  TR
+#  '90392' : QY # Northern Cyprus
++91: IN
++92: PK
++93: AF
++94: LK
++95: MM
++960: MV
++961: LB
++962: JO
++963: SY
++964: IQ
++965: KW
++966: SA
++967: YE
++968: OM
++969: -- # unassigned – originally South Yemen, now covered under 967 Yemen (formerly North Yemen)
++970: PS
++971: AE
++972: IL
++973: BH
++974: QA
++975: BT
++976: MN
++977: NP
++978: -- # unassigned – originally assigned to Dubai, now covered under 971
++979: XR
++98: IR
++990: -- # unassigned
++991: XC
++992: TJ
++993: TM
++994: AZ
++995: GE
++996: KG
++997: -- # unassigned
++998: UZ
++999: -- # reserved for future global service
