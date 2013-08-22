@@ -49,22 +49,35 @@ class Message
         // limit to one message
         $max_chunks = $this->options->get('chunks', 1);
 
-        $ascii_length   = 160;
-        $unicode_length = 140;
-
         // $out = mb_convert_encoding($out, 'UTF-8'); // force convert to unicode
 
+        // TODO: handle  GSM character set + Extended GSM character set
+        // for more look at http://www.clockworksms.com/blog/the-gsm-character-set/ and https://gist.github.com/michaelsanford/4978797
+        // NOTE: According to the standard, the alphabet for GSM 8 bit data encoding encoding is user specific, so at
+        // this time we don't mess with it. As a notice, one message length is 140 chars, chained message length is 134
         if ($max_chunks > 0) {
-            if (String::isASCII($out)) {
-                $max_length = $ascii_length;
+            if ($max_chunks > 1) {
+                $gsm_length     = 153 * $max_chunks;
+                $unicode_length = 67 * $max_chunks;
             } else {
-                $max_length = $unicode_length;
+                $gsm_length     = 160;
+                $unicode_length = 70;
             }
 
-            $max_length *= $max_chunks;
+            $out = String::cleanup($out);
 
-            if (strlen($out) > $max_length) {
-                $out = String::limit($out, $max_length, $this->options()->get('chunks-pad', '...'));
+            if (String::isGSM($out)) {
+                $out = String::limit(
+                    $out,
+                    $gsm_length,
+                    $this->options()->get('chunks-pad-gsm', $this->options()->get('chunks-pad', '...'))
+                );
+            } else {
+                $out = String::limit(
+                    $out,
+                    $unicode_length,
+                    $this->options()->get('chunks-pad-unicode', $this->options()->get('chunks-pad', '…'))
+                );
             }
         }
 

@@ -25,17 +25,32 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
     public function providerLongMessages()
     {
-        $latin    = str_repeat('long message is here', 30);
-        $cyrillic = str_repeat('Длинное сообщение здесь', 30);
+        $latin    = str_repeat('long message is here ', 30);
+        $cyrillic = str_repeat('Длинное сообщение здесь ', 30);
 
         return array(
-            array($latin, 1, '', 160 * 1),
-            array($latin, 2, '', 160 * 2),
-            array($latin, 3, '', 160 * 3),
+            array(
+                $latin, 1, 160,
+                'long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message'
+            ),
+            array(
+                $latin, 2, 153 * 2,
+                'long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message'
+            ),
+            array(
+                $latin, 3, 153 * 3,
+                'long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is here long message is he'
+            ),
 
-            array($cyrillic, 1, '...', 140 * 1 - 1), // -1 for whitespace
-            array($cyrillic, 2, '...', 140 * 2 - 1), // -1 for whitespace
-            array($cyrillic, 3, '...', 140 * 3),
+            array($cyrillic, 1, 70, 'Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здес'),
+            array(
+                $cyrillic, 2, 67 * 2,
+                'Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообще'
+            ),
+            array(
+                $cyrillic, 3, 67 * 3,
+                'Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное сообщение здесь Длинное с'
+            ),
         );
     }
 
@@ -162,14 +177,17 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider providerLongMessages
      */
-    public function testGetTextChunk($message, $chunks, $pad, $output_length)
+    public function testGetTextChunk($message, $chunks, $max_output_len, $output)
     {
         $obj = new Message($message);
         $obj->options()->set('compact', false);
         $obj->options()->set('chunks', $chunks);
-        $obj->options()->set('chunks-pad', $pad);
+        $obj->options()->set('chunks-pad', '');
 
-        $this->assertEquals($output_length, strlen($obj->getText()));
+        $out = $obj->getText();
+
+        $this->assertEquals($output, $out);
+        $this->assertLessThanOrEqual($max_output_len, mb_strlen($out, 'UTF-8'));
     }
 
     /**

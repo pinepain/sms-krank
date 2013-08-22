@@ -2,6 +2,8 @@ sms-krank
 =========
 [![Build Status](https://travis-ci.org/pinepain/sms-krank.png)](https://travis-ci.org/pinepain/sms-krank)
 
+** The library is under active development so API may be changed without any notice **
+
 A library for sending SMS messages through various service providers (gateways) based on pre-sets and phone number to minimize costs.
 The main purpose is to reduce SMS costs by sendind messages through the most suitable (cheaper) providers based on pre-sets and/or phone number.
 
@@ -14,9 +16,15 @@ The reason why you want to send thousands of sms may vary, but one of use cases 
 
 * Pick up the most suitable gate based on phone number
 * Message templating
-* Keep message size to fit required number of messages (by default 1)
+* Keep text size to fit required number of messages (by default 1)
+* Distinguish pure GSM encoded messages from Unicode messages to properly calculate max allowed text size.
 * Remove multiple whitespace characters (optional, by default is on), cleanup broken unicode characters.
 * No external dependencies (only `mb_string` extension used);
+
+## Further reading
+
+* [Wikipedia article about GSM 03.38] (http://en.wikipedia.org/wiki/GSM_03.38)
+* [3GPP TS 23.038: Alphabets and language-specific information] (http://www.3gpp.org/ftp/Specs/html-info/23038.htm)
 
 TODO
 ----
