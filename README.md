@@ -2,7 +2,7 @@ sms-krank
 =========
 [![Build Status](https://travis-ci.org/pinepain/sms-krank.png)](https://travis-ci.org/pinepain/sms-krank)
 
-** The library is under active development so API may be changed without any notice **
+**The library is under active development so API may be changed without any notice**
 
 A library for sending SMS messages through various service providers (gateways) based on pre-sets and phone number to minimize costs.
 The main purpose is to reduce SMS costs by sendind messages through the most suitable (cheaper) providers based on pre-sets and/or phone number.

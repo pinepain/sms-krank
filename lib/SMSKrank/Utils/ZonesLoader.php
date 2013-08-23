@@ -2,7 +2,6 @@
 
 namespace SMSKrank\Utils;
 
-
 //TODO: extends AbstractLoader, unit tests
 use SMSKrank\Utils\Exceptions\LoaderException;
 use Symfony\Component\Yaml\Yaml;
@@ -89,7 +88,10 @@ class ZonesLoader extends AbstractLoader
             } elseif ($country) {
                 // support short notation <dialing or area code or any other range> : <country alpha-2 code>
                 $country = array(
-                    '~' => array('geo' => array('country_alpha2' => $country))
+                    '~' => array(
+                        'geo'  => array('country_alpha2' => $country),
+                        'code' => array('country' => $prefix . $code)
+                    )
                 );
             } else {
                 $country = false; // no country value was provided
