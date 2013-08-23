@@ -6,11 +6,11 @@
 namespace SMSKrank\Gateways;
 
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayDetailedInterface;
+use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class SmsUslugiRu implements GatewayDetailedInterface
+class SmsUslugiRu implements GatewayInterface
 {
     private $login;
     private $password;
