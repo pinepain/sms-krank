@@ -209,90 +209,105 @@ validataion:
 # Non-geographic number – mobile services
 39:
   type: mobile
+  standarts: GSM
   code:
     area: 39
   operator: GOLDEN_TELECOM
 
 50:
   type: mobile
+  standarts: GSM
   code:
     area: 50
   operator: MTS
 
 63:
   type: mobile
+  standarts: GSM
   code:
     area: 63
   operator: LIFE
 
 66:
   type: mobile
+  standarts: GSM
   code:
     area: 66
   operator: MTS
 
 67:
   type: mobile
+  standarts: GSM
   code:
     area: 67
   operator: KYIVSTAR
 
 68:
   type: mobile
+  standarts: GSM
   code:
     area: 68
   operator: BEELINE
 
 91:
   type: mobile
+  standarts: UMTS
   code:
     area: 91
   operator: UTEL
 
 92:
   type: mobile
+  standarts: CDMA
   code:
     area: 92
   operator: PEOPLENET
 
 93:
   type: mobile
+  standarts: GSM
   code:
     area: 93
   operator: LIFE
 
 94:
   type: mobile
+  standarts: CDMA
   code:
     area: 94
   operator: INTERTELECOM
 
 95:
   type: mobile
+  standarts: GSM
   code:
     area: 95
   operator: MTS
 
 96:
   type: mobile
+  standarts: GSM
   code:
     area: 96
   operator: KYIVSTAR
 
 97:
   type: mobile
+  standarts: GSM
   code:
     area: 97
   operator: KYIVSTAR
 
 98:
   type: mobile
+  standarts: GSM
   code:
     area: 98
   operator: KYIVSTAR
 
 99:
   type: mobile
+  standarts: GSM
   code:
     area: 99
   operator: MTS
