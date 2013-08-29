@@ -1,0 +1,90 @@
+# http://www.itu.int/oth/T020200000F/en
+#   version from 2010-03-04
+#
+# http://en.wikipedia.org/wiki/+994
+# http://en.wikipedia.org/wiki/International_mobile_phone_codes
+# http://www.wtng.info/wtng-994-az.html
+
+# Country globals
+geo:
+  country_alpha2: UA
+code:
+  country: 994  # international calling code
+validataion:
+  nsn    : 9 # national significant number
+  ccn    : 3 # country code number
+
+# TODO:
+## Geographic number for fixed telephony services (area code)
+#12:
+#  type: fixed
+#  code:
+#    area: 12 # area calling code
+#  geo:
+#    city: Baku
+#
+# ... other codes here
+#
+#88:
+#  type: fixed
+#  code:
+#    area: 88 # area calling code
+#  geo:
+#    city: Baku
+
+# Non-geographic number – mobile services
+40:
+  type: mobile
+  standarts: CDMA
+  code:
+    area: 40
+  operator: CATEL
+
+44:
+  type: mobile
+  standarts: CDMA
+  code:
+    area: 44
+  operator: REGION
+
+50:
+  type: mobile
+  standarts: GSM
+  code:
+    area: 50
+  operator: AZERCELL
+
+51:
+  type: mobile
+  standarts: GSM
+  code:
+    area: 51
+  operator: AZERCELL
+
+55:
+  type: mobile
+  standarts: GSM
+  code:
+    area: 55
+  operator: BAKCELL
+
+60 540:
+  type: mobile
+  standarts: CDMA
+  code:
+    area: 60540
+  operator: NAKHTEL
+
+70:
+  type: mobile
+  standarts: GSM
+  code:
+    area: 70
+  operator: AZERFON
+
+77:
+  type: mobile
+  standarts: GSM
+  code:
+    area: 77
+  operator: AZERFON
