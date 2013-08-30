@@ -7,7 +7,7 @@
 
 # Country globals
 geo:
-  country_alpha2: UA
+  country_alpha2: UZ
 code:
   country: 994  # international calling code
 validataion:
