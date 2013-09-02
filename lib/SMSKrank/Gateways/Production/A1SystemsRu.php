@@ -3,14 +3,14 @@
  * @url http://a1systems.ru//
  */
 
-namespace SMSKrank\Gateways;
+namespace SMSKrank\Gateways\Production;
 
-use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayInterface;
+use SMSKrank\Gateways\AbstractGateway;
+use SMSKrank\Gateways\Exceptions\GatewayException;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class A1SystemsRu implements GatewayInterface
+class A1SystemsRu extends AbstractGateway
 {
     private $login;
     private $password;
@@ -21,6 +21,8 @@ class A1SystemsRu implements GatewayInterface
         $this->login    = $login;
         $this->password = $password;
         $this->sender   = $sender;
+
+        $this->options()->set('charsets', array('gscii', 'unicode'));
     }
 
     /**
@@ -28,20 +30,19 @@ class A1SystemsRu implements GatewayInterface
      * @param Message     $message
      * @param \DateTime   $schedule
      *
-     * @throws \SMSKrank\Exceptions\GatewayException
+     * @throws GatewayException
      *
      * @return float | null Message fee, if available. Null otherwise
      */
     public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
-
         $args = array(
             'operation' => 'send',
             'login'     => $this->login,
             'password'  => $this->password,
-            'msisdn'    => $number->getNumber(),
+            'msisdn'    => $number->number(),
             'shortcode' => $this->sender,
-            'text'      => $message->getText(),
+            'text'      => $this->getMessageText($message->text()),
         );
 
         $url = 'http://http.a1smsmarket.ru:8000/send?' . http_build_query($args);
@@ -60,5 +61,4 @@ class A1SystemsRu implements GatewayInterface
 
         return null;
     }
-
 }

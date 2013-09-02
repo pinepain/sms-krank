@@ -15,6 +15,6 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase
     {
         $number = '12345';
         $object = new PhoneNumber($number);
-        $this->assertEquals($number, $object->getNumber());
+        $this->assertEquals($number, $object->number());
     }
 }

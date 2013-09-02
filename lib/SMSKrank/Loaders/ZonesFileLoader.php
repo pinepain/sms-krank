@@ -1,21 +1,21 @@
 <?php
 
-namespace SMSKrank\Utils;
+namespace SMSKrank\Loaders;
 
-//TODO: extends AbstractLoader, unit tests
-use SMSKrank\Utils\Exceptions\LoaderException;
-use Symfony\Component\Yaml\Yaml;
+use SMSKrank\Loaders\Exceptions\ZonesLoaderException;
 
-class ZonesLoader extends AbstractLoader
+class ZonesFileLoader extends AbstractFileLoader
 {
     public function __construct($source = null)
     {
         if (!$source) {
+            // TODO: get rid of this
+            // default location for zones file is vendor/pinepain/sms-krank/data/zones
             $source = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', '..', 'data', 'zones'));
         }
 
         if (is_file($source)) {
-            throw new LoaderException("Zones source is file");
+            throw new ZonesLoaderException("Zones source is file");
         }
 
         parent::__construct($source);
@@ -103,7 +103,7 @@ class ZonesLoader extends AbstractLoader
                 $_code = explode('-', $_code);
 
                 if (sizeof($_code) != 2) {
-                    throw new LoaderException("Invalid range in {$code}");
+                    throw new ZonesLoaderException("Invalid range in {$code}");
                 }
 
                 list ($start, $end) = $_code;
@@ -113,11 +113,11 @@ class ZonesLoader extends AbstractLoader
                 // TODO: start and end should be in [0, 9], start < end, when range is [0,9] do nothing, just set props to current level
 
                 if ($start > 9 || $end > 9) {
-                    throw new LoaderException("Invalid range in {$code} (start and end should be less then 10)");
+                    throw new ZonesLoaderException("Invalid range in {$code} (start and end should be less then 10)");
                 }
 
                 if ($size < 0) {
-                    throw new LoaderException("Invalid range in {$code} (start is equal or greater than end)");
+                    throw new ZonesLoaderException("Invalid range in {$code} (start is equal or greater than end)");
                 }
 
                 if ($size == 10) {

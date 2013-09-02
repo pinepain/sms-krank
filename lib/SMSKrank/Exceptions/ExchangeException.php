@@ -2,6 +2,6 @@
 
 namespace SMSKrank\Exceptions;
 
-class ExchangeException extends \Exception
+class ExchangeException extends SMSKrankException
 {
 }

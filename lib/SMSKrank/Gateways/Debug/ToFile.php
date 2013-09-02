@@ -3,11 +3,11 @@
 namespace SMSKrank\Gateways\Debug;
 
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayInterface;
+use SMSKrank\Interfaces\SenderInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class ToFile implements GatewayInterface
+class ToFile implements SenderInterface
 {
     private $file_name;
     private $format;
@@ -31,11 +31,11 @@ class ToFile implements GatewayInterface
 
         $now      = new \DateTime();
         $template = str_replace('{datetime}', $now->format(\DateTime::ISO8601), $template);
-        $template = str_replace('{phone}', $number->getNumber(), $template);
+        $template = str_replace('{phone}', $number->number(), $template);
         $template = str_replace('{schedule}', $schedule, $template);
 
         // message may contain any data, even template placeholders, so process it aat last
-        $template = str_replace('{message}', $message->getText(), $template);
+        $template = str_replace('{message}', $message->text(), $template);
 
         $fh = fopen($this->file_name, 'w+');
         if (!$fh) {

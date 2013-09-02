@@ -2,12 +2,12 @@
 
 namespace SMSKrank\Helpers\Gateways;
 
+use SMSKrank\AbstractGateway;
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class EchoDude implements GatewayInterface
+class EchoDude extends AbstractGateway
 {
     private $name;
     private $format;
@@ -20,7 +20,6 @@ class EchoDude implements GatewayInterface
         $this->format  = $format;
         $this->balance = $balance;
         $this->price   = $price;
-
     }
 
     public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
@@ -32,7 +31,7 @@ class EchoDude implements GatewayInterface
         $template = $this->format;
 
         $template = str_replace('{name}', $this->name, $template);
-        $template = str_replace('{phone}', $number->getNumber(), $template);
+        $template = str_replace('{phone}', $number->number(), $template);
 
         $template = str_replace(
             '{schedule}',
@@ -41,7 +40,7 @@ class EchoDude implements GatewayInterface
         );
 
         // message may contain any data, even template placeholders, so process it aat last
-        $template = str_replace('{message}', $message->getText(), $template);
+        $template = str_replace('{message}', $message->text(), $template);
 
         echo $template;
         $this->balance -= $this->price;

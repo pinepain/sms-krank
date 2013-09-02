@@ -19,7 +19,7 @@ class PhoneNumber
         $this->number = $phone_number;
     }
 
-    public function getNumber()
+    public function number()
     {
         return $this->number;
     }

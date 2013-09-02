@@ -2,6 +2,6 @@
 
 namespace SMSKrank\Exceptions;
 
-class PhoneNumberException extends \Exception
+class PhoneNumberException extends SMSKrankException
 {
 }

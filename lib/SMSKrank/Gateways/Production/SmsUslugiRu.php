@@ -5,12 +5,12 @@
 
 namespace SMSKrank\Gateways;
 
+use SMSKrank\AbstractGateway;
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class SmsUslugiRu implements GatewayInterface
+class SmsUslugiRu extends AbstractGateway
 {
     private $login;
     private $password;
@@ -20,15 +20,17 @@ class SmsUslugiRu implements GatewayInterface
         $this->login    = $login;
         $this->password = $password;
 
+        $this->options()->set('charsets', array('gscii', 'unicode'));
     }
 
     public function send(PhoneNumber $number, Message $message, \DateTime $schedule = null)
     {
+
         $args = array(
             'login'        => $this->login,
             'password'     => $this->password,
-            'txt'          => $message->getText(), // TODO: text should be UTF-8 encoded
-            'to'           => $number->getNumber(),
+            'txt'          => $this->getMessageText($message->text()),
+            'to'           => $number->number(),
             'onlydelivery' => 1
         );
 

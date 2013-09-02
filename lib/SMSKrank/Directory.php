@@ -3,7 +3,7 @@
 namespace SMSKrank;
 
 use SMSKrank\Exceptions\DirectoryException;
-use SMSKrank\Utils\Exceptions\LoaderException;
+use SMSKrank\Loaders\Exceptions\LoaderException;
 use SMSKrank\Utils\ZonesLoader;
 
 class Directory

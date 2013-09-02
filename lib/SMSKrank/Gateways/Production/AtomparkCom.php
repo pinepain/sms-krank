@@ -5,12 +5,14 @@
 
 namespace SMSKrank\Gateways;
 
+use SMSKrank\AbstractGateway;
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
+use SMSKrank\Utils\Charsets\Gscii;
+use SMSKrank\Utils\Charsets\Unicode;
 
-class AtomparkCom implements GatewayInterface
+class AtomparkCom extends AbstractGateway
 {
     private $version = '3.0';
     private $gate = 'http://atompark.com/api/sms';
@@ -24,6 +26,8 @@ class AtomparkCom implements GatewayInterface
         $this->public_key  = $public_key;
         $this->private_key = $private_key;
         $this->sender      = $sender;
+
+        $this->options()->set('charsets', array('gscii', 'unicode'));
     }
 
 //    public function getSenderStatus($name, $country = null)
@@ -83,8 +87,8 @@ class AtomparkCom implements GatewayInterface
     {
         $args = array(
             'key'    => $this->public_key,
-            'text'   => $message->getText(),
-            'phone'  => $number->getNumber(),
+            'text'   => $this->getMessageText($message->text()),
+            'phone'  => $number->number(),
             'sender' => $this->sender,
         );
 
@@ -95,8 +99,7 @@ class AtomparkCom implements GatewayInterface
 
         $json = $this->call('sendSMS', $args);
 
-        if (!isset($json['price'])
-        ) {
+        if (!isset($json['price'])) {
             throw new GatewayException('Bad response');
         }
 

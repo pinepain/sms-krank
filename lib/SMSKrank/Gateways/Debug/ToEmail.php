@@ -2,14 +2,13 @@
 
 namespace SMSKrank\Gateways\Debug;
 
-
 use PHPMailer;
 use SMSKrank\Exceptions\GatewayException;
-use SMSKrank\GatewayInterface;
+use SMSKrank\Interfaces\SenderInterface;
 use SMSKrank\Message;
 use SMSKrank\PhoneNumber;
 
-class ToEmail implements GatewayInterface
+class ToEmail implements SenderInterface
 {
     private $from;
     private $to;
@@ -97,8 +96,8 @@ class ToEmail implements GatewayInterface
         }
         $nl = "\r\n";
 
-        $mailer->Body .= "Phone: " . $number->getNumber() . $nl;
-        $mailer->Body .= "Message: " . $message->getText() . $nl;
+        $mailer->Body .= "Phone: " . $number->number() . $nl;
+        $mailer->Body .= "Message: " . $message->text() . $nl;
         $mailer->Body .= "Scheduled: " . ($schedule ? $schedule->format(\DateTime::ISO8601) : 'immediately');
 
         if (!$mailer->Send()) {

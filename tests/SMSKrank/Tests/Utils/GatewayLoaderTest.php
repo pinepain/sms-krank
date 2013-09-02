@@ -4,6 +4,7 @@ namespace SMSKrank\Tests\Utils;
 
 use SMSKrank\Utils\GatewaysLoader;
 
+// TODO: gateway options test
 class GatewaysLoaderTest extends \PHPUnit_Framework_TestCase
 {
     private $providerExpectedException = '\SMSKrank\Utils\Exceptions\LoaderException';

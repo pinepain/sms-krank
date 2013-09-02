@@ -3,6 +3,7 @@
 namespace SMSKrank;
 
 use SMSKrank\Exceptions\PhoneNumberDetailedException;
+use SMSKrank\Utils\Options;
 
 class PhoneNumberDetailed extends PhoneNumber
 {
@@ -14,88 +15,34 @@ class PhoneNumberDetailed extends PhoneNumber
     {
         parent::__construct($phone_number);
 
-        $this->codes = $calling_codes;
-        $this->geo   = $geo;
-        $this->props = $props;
+        $this->codes = new Options($calling_codes);
+        $this->geo   = new Options($geo);
+        $this->props = new Options($props);
     }
 
-    /**
-     * @param null $field
-     *
-     * @return int|array|mixed
-     *
-     * @throws Exceptions\PhoneNumberDetailedException
-     */
-
-    public function getCode($field = null)
+    public function codes()
     {
-        if (null !== $field) {
-            if (!isset($this->codes[$field])) {
-                throw new PhoneNumberDetailedException("Phone number doesn't contain calling code for '{$field}' field");
-            }
-
-            return $this->codes[$field];
-        }
-
         return $this->codes;
     }
 
-    /**
-     * @param null $field
-     *
-     * @return string|array|mixed
-     *
-     * @throws Exceptions\PhoneNumberDetailedException
-     */
-    public function getGeo($field = null)
+    public function geo()
     {
-        if (null !== $field) {
-            if (!isset($this->geo[$field])) {
-                throw new PhoneNumberDetailedException("Phone number doesn't contain geo information for '{$field}' field");
-            }
-
-            return $this->geo[$field];
-        }
-
         return $this->geo;
     }
 
-    public function hasProp($field)
+    public function props()
     {
-        return isset($this->props[$field]);
-    }
-
-    /**
-     * @param null $field
-     *
-     * @return mixed|array
-     *
-     * @throws Exceptions\PhoneNumberDetailedException
-     */
-    public function getProp($field = null)
-    {
-        if (null !== $field) {
-            if (!isset($this->props[$field])) {
-                throw new PhoneNumberDetailedException("Phone number property '{$field}' doesn't exists");
-            }
-
-            return $this->props[$field];
-        }
-
         return $this->props;
     }
 
-    public function isMobile()
-    {
-        try {
-            return $this->getProp('type') === 'mobile';
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-
-//    public function getGeo ($field = null) {
-//
+//    public function is($type)
+//    {
+//        return ($this->props()->get('type') == $type);
 //    }
+
+//    public function isMobile()
+//    {
+//        return ($this->props()->get('type') == 'mobile');
+//    }
+
 }

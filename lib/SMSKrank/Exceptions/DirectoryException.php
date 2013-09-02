@@ -2,6 +2,6 @@
 
 namespace SMSKrank\Exceptions;
 
-class DirectoryException extends \Exception
+class DirectoryException extends SMSKrankException
 {
 }

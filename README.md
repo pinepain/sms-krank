@@ -21,6 +21,13 @@ The reason why you want to send thousands of sms may vary, but one of use cases 
 * Remove multiple whitespace characters (optional, by default is on), cleanup broken unicode characters.
 * No external dependencies (only `mb_string` extension used);
 
+
+#### Supported charsets
+
+* GSM - [GSM 03.38] (http://en.wikipedia.org/wiki/GSM_03.38) charset (basic and extended table)
+* GSCII - charset made from intersection GSM and [ASCII] (http://en.wikipedia.org/wiki/ASCII)
+* Unicode - [UTF-8] (http://en.wikipedia.org/wiki/Unicode) charset
+
 ## Further reading
 
 * [Wikipedia article about GSM 03.38] (http://en.wikipedia.org/wiki/GSM_03.38)
@@ -30,8 +37,10 @@ TODO
 ----
 
 - [ ] unit tests
-- [ ] code coverage tools (https://coveralls.io?) integration into github page
 - [ ] check gates whether they are alive and credentials are valid
+- [ ] gates testing tool (framework)
+- [ ] one file loader and multiple parsers for different content types
+- [ ] loaders caching
 
 Message capacity
 ----------------

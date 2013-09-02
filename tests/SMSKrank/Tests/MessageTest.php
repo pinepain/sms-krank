@@ -101,36 +101,20 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers       \SMSKrank\Message::__construct
-     * @covers       \SMSKrank\Message::getText
+     * @covers       \SMSKrank\Message::text
      *
      * @dataProvider providerMessage
      */
     public function testGetTextFull($message, $expected)
     {
         $obj = new Message($message);
-        $obj->options()->set('compact', false);
-        $obj->options()->set('chunks', false);
 
-        $this->assertEquals($message, $obj->getText(false));
+        $this->assertEquals($message, $obj->text());
     }
 
     /**
      * @covers       \SMSKrank\Message::__construct
-     * @covers       \SMSKrank\Message::getText
-     *
-     * @dataProvider providerMessage
-     */
-    public function testGetTextCompact($message, $compact)
-    {
-        $obj = new Message($message);
-        $obj->options()->set('chunks', false);
-
-        $this->assertEquals($compact, $obj->getText());
-    }
-
-    /**
-     * @covers       \SMSKrank\Message::__construct
-     * @covers       \SMSKrank\Message::getPattern
+     * @covers       \SMSKrank\Message::pattern
      *
      * @dataProvider providerBuilder
      */
@@ -139,12 +123,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $obj = new Message($message, $arguments);
         $obj->options()->set('chunks', false);
 
-        $this->assertEquals($message, $obj->getPattern());
+        $this->assertEquals($message, $obj->pattern());
     }
 
     /**
      * @covers       \SMSKrank\Message::__construct
-     * @covers       \SMSKrank\Message::getArguments
+     * @covers       \SMSKrank\Message::arguments
      *
      * @dataProvider providerBuilder
      */
@@ -153,41 +137,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $obj = new Message($message, $arguments);
         $obj->options()->set('chunks', false);
 
-        $this->assertEquals($arguments, $obj->getArguments());
-    }
-
-    /**
-     * @covers       \SMSKrank\Message::__construct
-     * @covers       \SMSKrank\Message::getText
-     *
-     * @dataProvider providerBuilder
-     */
-    public function testGetTextBuilt($message, $compiled, $arguments)
-    {
-        $builder = new PlaceholdersBuilder();
-        $obj     = new Message($message, $arguments, $builder);
-        $obj->options()->set('chunks', false);
-
-        $this->assertEquals($compiled, $obj->getText());
-    }
-
-    /**
-     * @covers       \SMSKrank\Message::__construct
-     * @covers       \SMSKrank\Message::getText
-     *
-     * @dataProvider providerLongMessages
-     */
-    public function testGetTextChunk($message, $chunks, $max_output_len, $output)
-    {
-        $obj = new Message($message);
-        $obj->options()->set('compact', false);
-        $obj->options()->set('chunks', $chunks);
-        $obj->options()->set('chunks-pad', '');
-
-        $out = $obj->getText();
-
-        $this->assertEquals($output, $out);
-        $this->assertLessThanOrEqual($max_output_len, mb_strlen($out, 'UTF-8'));
+        $this->assertEquals($arguments, $obj->arguments());
     }
 
     /**

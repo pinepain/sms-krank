@@ -1,11 +1,11 @@
 <?php
 
-namespace SMSKrank\Utils;
+namespace SMSKrank\Loaders;
 
-use SMSKrank\Utils\Exceptions\LoaderException;
+use SMSKrank\Loaders\Exceptions\LoaderException;
 use Symfony\Component\Yaml\Yaml;
 
-abstract class AbstractLoader
+class FileLoader implements LoaderInterface
 {
     private $source;
     private $container = array();
@@ -110,6 +110,7 @@ abstract class AbstractLoader
     {
         try {
             $this->get($what);
+
             return true;
         } catch (\Exception $e) {
         }
@@ -117,7 +118,7 @@ abstract class AbstractLoader
         return false;
     }
 
-    public function unload($what = null)
+    public function remove($what = null)
     {
         if ($what !== null) {
             unset($this->container[$what]);

@@ -5,10 +5,13 @@ namespace SMSKrank;
 use SMSKrank\Exceptions\ExchangeException;
 use SMSKrank\Exceptions\GatewayException;
 use SMSKrank\Exceptions\PhoneNumberDetailedException;
+use SMSKrank\Interfaces\SenderInterface;
 use SMSKrank\Utils\AbstractLoader;
 use SMSKrank\Utils\Exceptions\LoaderException;
+use SMSKrank\Utils\Options;
+use SMSKrank\Utils\Packer;
 
-class Exchange implements GatewayInterface
+class Exchange implements SenderInterface
 {
     private $maps_loader;
     private $gateway_factory;
@@ -26,7 +29,7 @@ class Exchange implements GatewayInterface
         if ($number instanceof PhoneNumberDetailed) {
             $detailed_phone_number = $number;
         } else {
-            $detailed_phone_number = $this->directory->getPhoneNumberDetailed($number->getNumber());
+            $detailed_phone_number = $this->directory->getPhoneNumberDetailed($number->number());
         }
 
         try {
@@ -60,6 +63,8 @@ class Exchange implements GatewayInterface
                 }
             }
 
+            // TODO: detect dead gates, retries count, etc
+            // TODO: log somehow errors
             try {
                 $gate  = $this->gateway_factory->getGateway($gate_name);
                 $price = $gate->send($detailed_phone_number, $message, $schedule);
