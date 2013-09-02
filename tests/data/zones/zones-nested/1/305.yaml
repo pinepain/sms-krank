@@ -1,0 +1,13 @@
+# All of Miami-Dade County and the Florida Keys of Monroe County: Miami, Homestead, Coral Gables, Key West; overlaid by 786 for all of Miami-Dade
+
+geo:
+  country_alpha2: US
+  state_ansi: FL
+operator: FictionalTwo
+
+
+555 51:
+  type: landline
+
+555 52:
+  type: mobile

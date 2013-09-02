@@ -1,10 +1,3 @@
-# http://en.wikipedia.org/wiki/List_of_country_calling_codes#Zone_1:_North_American_Numbering_Plan_Area
-# http://en.wikipedia.org/wiki/List_of_Florida_area_codes
-# http://en.wikipedia.org/wiki/List_of_Nevada_area_codes
-# http://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#By_state.2C_province_or_country
-
-#+1: -- # cleanup zone
-
 # US, FL
 +1 239: # Southwest coast: all of Lee County, Collier County, mainland Monroe County excluding Florida Keys; includes Cape Coral, Fort Myers, Naples, Everglades
   geo:
@@ -32,13 +25,6 @@
   geo:
     country_alpha2: US
     location: area 52
-
-
-#+1 775: #All of Nevada outside the southeastern corner, including Reno and Carson City
-#  geo:
-#    country_alpha2: US
-#    state_ansi: NV
-
 
 #Canada, British Columbia (BC)
 +1 236:

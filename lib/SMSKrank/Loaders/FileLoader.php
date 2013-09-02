@@ -3,20 +3,24 @@
 namespace SMSKrank\Loaders;
 
 use SMSKrank\Loaders\Exceptions\LoaderException;
+use SMSKrank\Loaders\Parsers\ParserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class FileLoader implements LoaderInterface
 {
     private $source;
+    private $parser;
+
     private $container = array();
 
-    public function __construct($source)
+    public function __construct($source, ParserInterface $parser)
     {
         if (!file_exists($source)) {
             throw new LoaderException('Source does not exists');
         }
 
         $this->source = $source;
+        $this->parser = $parser;
     }
 
     /**
@@ -47,7 +51,7 @@ class FileLoader implements LoaderInterface
                 );
 
                 foreach ($dir_content as $what) {
-                    $this->load(substr($what, 0, -5));
+                    $this->load(substr($what, 0, -5), $one_shot);
                 }
 
                 return $this->container;
@@ -77,7 +81,9 @@ class FileLoader implements LoaderInterface
             throw new LoaderException("Garbage in container file '{$what}' ({$_container_file})");
         }
 
-        $parsed = $this->postLoad($loaded, $what);
+        $container = $this->container; // backup container
+        $parsed = $this->parser->parse($loaded, $what, $this);
+        $this->container = $container;  // restore container
 
         if (!is_array($parsed)) {
             throw new LoaderException("Garbage data after parsing in '{$what}' container");
@@ -93,17 +99,21 @@ class FileLoader implements LoaderInterface
         }
     }
 
-    public function get($what = null)
+    public function get($what = null, $one_shot = false)
     {
         if (null != $what) {
             if (!isset($this->container[$what])) {
-                $this->load($what);
+                $result = $this->load($what, $one_shot);
+            } else {
+                // maybe we can backup current item and load it again in one-shot?
+                $result = $this->container[$what];
             }
 
-            return $this->container[$what];
+        } else {
+            $result = $this->container;
         }
 
-        return $this->container;
+        return $result;
     }
 
     public function has($what)

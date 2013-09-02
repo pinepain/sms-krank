@@ -1,0 +1,14 @@
+# Southwest coast: all of Lee County, Collier County, mainland Monroe County excluding Florida Keys; includes Cape Coral, Fort Myers, Naples, Everglades
+
+geo:
+  country_alpha2: US
+  state_ansi: FL
+operator: FictionalOne
+
+
+555 51:
+  type: landline
+
+555 52:
+  type: mobile
+

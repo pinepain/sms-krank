@@ -1,0 +1,13 @@
+#Canada, Quebec (QC)
+
+geo:
+  country_alpha2: CA
+  province_postal: QC
+
+operator: FictionalTwo
+
+555 51:
+  type: landline
+
+555 52:
+  type: mobile

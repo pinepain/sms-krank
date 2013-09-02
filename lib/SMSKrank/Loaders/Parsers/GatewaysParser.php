@@ -1,6 +1,6 @@
 <?php
 
-namespace SMSKrank\Loaders;
+namespace SMSKrank\Loaders\Parsers;
 
 use SMSKrank\Loaders\Exceptions\GatewaysParserException;
 

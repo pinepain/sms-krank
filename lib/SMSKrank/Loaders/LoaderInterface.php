@@ -7,15 +7,23 @@ interface LoaderInterface
     /**
      * Load containers
      *
-     * @param null $container Container name to load. By default all available containers will be loaded.
-     * @param bool $one_shot  Do not store loaded containers, just return them
+     * @param string | null $container Container name to load. By default all available containers will be loaded.
+     * @param bool          $one_shot  Do not store loaded containers, just return them
      *
      * @return array
      * @throws Exceptions\LoaderException
      */
     public function load($container = null, $one_shot = false);
 
-//    public function get($container = null, $one_shot = false); // TODO: do we need get and load methods? they do quite same thing. I stick to get() and remove load()
+    /**
+     * Get containers. If they was not loaded - load and get
+     *
+     * @param string | null $container Container name to load. By default all available containers will be loaded
+     * @param bool          $one_shot  Do not store loaded containers, just return them (not applicable for already loaded)
+     *
+     * @return mixed
+     */
+    public function get($container = null, $one_shot = false);
 
     /**
      * Check whether container available

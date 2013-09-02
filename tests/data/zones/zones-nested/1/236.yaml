@@ -1,0 +1,14 @@
+#Canada, British Columbia (BC)
+
+geo:
+  country_alpha2: CA
+  province_postal: BC
+
+operator: FictionalOne
+
+
+555 51:
+  type: landline
+
+555 52:
+  type: mobile

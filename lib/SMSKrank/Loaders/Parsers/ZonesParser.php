@@ -1,54 +1,32 @@
 <?php
 
-namespace SMSKrank\Loaders;
+namespace SMSKrank\Loaders\Parsers;
 
-use SMSKrank\Loaders\Exceptions\ZonesLoaderException;
+use SMSKrank\Loaders\LoaderInterface;
+use SMSKrank\Loaders\Parsers\Exceptions\ZonesParserException;
 
-class ZonesFileLoader extends AbstractFileLoader
+// TODO: load by one or more numbers (like in directory getNumberProps)
+class ZonesParser implements ParserInterface
 {
-    public function __construct($source = null)
+    public function parse(array $data, $section, LoaderInterface $loader)
     {
-        if (!$source) {
-            // TODO: get rid of this
-            // default location for zones file is vendor/pinepain/sms-krank/data/zones
-            $source = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', '..', 'data', 'zones'));
+        // NOTE: load with one-shot all further files cause they should be stored nested, not in container root
+        // TODO: Implement parse() method.
+
+        // TODO: support $section or get rid of it
+        $res = $this->expandZoneData($data, $section, '', $loader);
+
+        if ($section > 0 && $section < 10 && count($res) != 1) {
+            var_dump(func_get_args());
+            die;
+            $keys = implode(', ', array_keys($res));
+            throw new ZonesParserException("Root zone '{$section}' possible collision (zones present: {$keys})");
         }
 
-        if (is_file($source)) {
-            throw new ZonesLoaderException("Zones source is file");
-        }
-
-        parent::__construct($source);
+        return $res;
     }
 
-    public function load($zone = null, $one_shot = false)
-    {
-        if (null === $zone) {
-            $dir_content = array_filter(
-                scandir($this->getSource()),
-                function ($val) {
-                    return is_numeric($val) && $val > 1 && $val < 10;
-                }
-            );
-
-            $loaded = array();
-
-            foreach ($dir_content as $zone) {
-                $loaded = array_merge($loaded, $this->load($zone, $one_shot));
-            }
-
-            return $loaded;
-        }
-
-        return parent::load($zone . DIRECTORY_SEPARATOR . '!index', $one_shot);
-    }
-
-    protected function postLoad(array $loaded, $what)
-    {
-        return $this->expandZoneData($loaded);
-    }
-
-    private function expandZoneData(array $data, $prefix = '')
+    private function expandZoneData(array $data, $zone, $prefix, LoaderInterface $loader)
     {
         $out       = array();
         $out_props = array();
@@ -73,16 +51,23 @@ class ZonesFileLoader extends AbstractFileLoader
                 continue;
             }
 
+            $_prefix = $prefix . $code;
+            if (empty($prefix)) {
+                $_prefix = substr($prefix . $code, 1);
+            }
+
             // process numbers and ranges
 
             if (is_array($country)) {
-                $country = $this->expandZoneData($country, $prefix . $code);
+                $country = $this->expandZoneData($country, $zone, $_prefix, $loader);
             } elseif ($country === '--') {
                 $country = false; // not supported
             } elseif ($country === '++') {
+                if (empty($_prefix)) {
+                    throw new ZonesParserException("Root description for zone '{$zone}' couldn't be loaded from sub-zones directory");
+                }
                 // support sub-zone files
-                $_prefix = $prefix . $code;
-                $country = parent::load($_prefix[0] . DIRECTORY_SEPARATOR . $_prefix, true);
+                $country = $loader->load($zone . DIRECTORY_SEPARATOR . $_prefix, true);
             } elseif ($country === '==') {
                 $country = array();
             } elseif ($country) {
@@ -103,7 +88,7 @@ class ZonesFileLoader extends AbstractFileLoader
                 $_code = explode('-', $_code);
 
                 if (sizeof($_code) != 2) {
-                    throw new ZonesLoaderException("Invalid range in {$code}");
+                    throw new ZonesParserException("Invalid range in {$code}");
                 }
 
                 list ($start, $end) = $_code;
@@ -113,11 +98,11 @@ class ZonesFileLoader extends AbstractFileLoader
                 // TODO: start and end should be in [0, 9], start < end, when range is [0,9] do nothing, just set props to current level
 
                 if ($start > 9 || $end > 9) {
-                    throw new ZonesLoaderException("Invalid range in {$code} (start and end should be less then 10)");
+                    throw new ZonesParserException("Invalid range in {$code} (start and end should be less then 10)");
                 }
 
                 if ($size < 0) {
-                    throw new ZonesLoaderException("Invalid range in {$code} (start is equal or greater than end)");
+                    throw new ZonesParserException("Invalid range in {$code} (start is equal or greater than end)");
                 }
 
                 if ($size == 10) {
