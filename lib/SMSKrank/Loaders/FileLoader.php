@@ -81,9 +81,9 @@ class FileLoader implements LoaderInterface
             throw new LoaderException("Garbage in container file '{$what}' ({$_container_file})");
         }
 
-        $container = $this->container; // backup container
-        $parsed = $this->parser->parse($loaded, $what, $this);
-        $this->container = $container;  // restore container
+        $container       = $this->container; // backup container
+        $parsed          = $this->parser->parse($loaded, $what, $this);
+        $this->container = $container; // restore container
 
         if (!is_array($parsed)) {
             throw new LoaderException("Garbage data after parsing in '{$what}' container");
@@ -135,24 +135,5 @@ class FileLoader implements LoaderInterface
         } else {
             $this->container = array();
         }
-    }
-
-
-    /**
-     * Post-load hook, process or validate loaded data
-     *
-     * @param array  $loaded
-     * @param string $what
-     *
-     * @return array
-     */
-    protected function postLoad(array $loaded, $what)
-    {
-        return $loaded;
-    }
-
-    final protected function getSource()
-    {
-        return $this->source;
     }
 }

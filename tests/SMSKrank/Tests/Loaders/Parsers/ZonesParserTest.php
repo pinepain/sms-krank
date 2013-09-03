@@ -6,7 +6,6 @@ namespace SMSSKrank\Tests\Loaders\Parsers;
 use SMSKrank\Loaders\Parsers\ParserInterface;
 use SMSKrank\Loaders\Parsers\ZonesParser;
 
-
 class ZonesParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -23,47 +22,114 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
     {
         $out = array();
 
-        // plain list of codes and countries
-        $out[] = array(
-            array(
-                1 => array(
-                    '~' => array(
-                        'geo'  => array('country_alpha2' => 'FOO'),
-                        'code' => array('country' => 1),
-                    )
-                ),
-            ),
-            array(
-                '1' => 'FOO',
-            ),
-            1,
-            array()
+        $foo_props = array(
+            'geo'  => array('country_alpha2' => 'FOO'),
+            'code' => array('country' => 1),
         );
 
-        // nested loading
+        $bar_props = array(
+            'geo'  => array('country_alpha2' => 'BAR'),
+            'code' => array('country' => 1),
+        );
+
+        // override code in zone
         $out[] = array(
             array(
                 1 => array(
-                    '~' => array(
-                        'geo'  => array('country_alpha2' => 'FOO'),
-                        'code' => array('country' => 1),
+                    '~' => $foo_props, 5 => array(
+                        '~' => array('geo' => array('country_alpha2' => 'BAR'), 'code' => array('country' => 15))
                     )
-                ),
+                )
             ),
-            array(
-                '1 23' => array(
-                    '45' => array(
-                        '67' => '++'
-                    ),
-                ),
-            ),
+            array('1' => 'FOO', '15' => 'BAR'),
+            1,
+        );
+
+        // plain list of codes and countries
+        $out[] = array(
+            array(1 => array('~' => $foo_props)),
+            array('1' => 'FOO',),
+            1,
+        );
+
+        // sub-zones loading
+        $out[] = array(
+            array(1 => array(2 => array('~' => $foo_props))),
+            array('12' => '++'),
             1,
             array(
-                '1/root' => array(
-                    'geo'  => array('country_alpha2' => 'FOO'),
-                    'code' => array('country' => 1),
-                ),
+                array('1/2', true, array('~' => $foo_props))
             )
+        );
+
+        // nested sub-zones loading
+        $out[] = array(
+            array(1 => array(2 => array('~' => $foo_props), 3 => array('~' => $bar_props))),
+            array('12' => '++', '13' => '++'),
+            1,
+            array(
+                array('1/2', true, array('~' => $foo_props)),
+                array('1/3', true, array('~' => $bar_props)),
+            )
+        );
+
+        // mark specific code as not supported
+        $out[] = array(
+            array(
+                1 =>
+                array(
+                    '~' => $foo_props,
+                    5   => false, //marked as not supported
+                )
+            ),
+            array('1' => 'FOO', '15' => '--'),
+            1,
+        );
+
+        // mark code range as not supported
+        $out[] = array(
+            array(
+                1 =>
+                array(
+                    '~' => $foo_props,
+                    5   => false, //marked as not supported
+                    6   => false, //marked as not supported
+                    7   => false, //marked as not supported
+                    8   => false, //marked as not supported
+                )
+            ),
+            array('1' => 'FOO', '15~18' => '--'),
+            1,
+        );
+
+        // add code to previously marked as not supported section
+        $out[] = array(
+            array(
+                1 =>
+                array(
+                    '~' => $foo_props,
+                    // was marked as not supported
+                    5   => array(
+                        0 => false,
+                        1 => false,
+                        2 => array(
+                            '~' => array(
+                                'geo'  => array('country_alpha2' => 'BAR'),
+                                'code' => array('country' => 152)
+                            )
+                        ),
+                        3 => false,
+                        4 => false,
+                        5 => false,
+                        6 => false,
+                        7 => false,
+                        8 => false,
+                        9 => false,
+                    ),
+                )
+            ),
+            array('1' => 'FOO', '15' => '--', '152' => 'BAR'),
+            1,
         );
 
         return $out;
@@ -72,6 +138,15 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
     public function providerParseFailure()
     {
         $out = array();
+
+        // attempt to load root zone from sub-zone file
+        $out[] = array(
+            array('1' => '++'),
+            1,
+            array(),
+            'SMSKrank\Loaders\Parsers\Exceptions\ZonesParserException',
+            "Root description for zone '1' couldn't be loaded from sub-zones directory",
+        );
 
         // zones mixing in data, we don't care(?) TODO: fix it, possible collision?
         $out[] = array(
@@ -98,7 +173,7 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
      * @param $section
      * @param $loader_map
      */
-    public function testParseSuccess($expected, $data, $section, $loader_map)
+    public function testParseSuccess($expected, $data, $section, $loader_map = array())
     {
         $mock = $this->getMock('SMSKrank\Loaders\LoaderInterface');
 
