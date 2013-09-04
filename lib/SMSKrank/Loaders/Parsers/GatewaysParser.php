@@ -2,79 +2,70 @@
 
 namespace SMSKrank\Loaders\Parsers;
 
-use SMSKrank\Loaders\Exceptions\GatewaysParserException;
+use SMSKrank\Loaders\LoaderInterface;
+use SMSKrank\Loaders\Parsers\Exceptions\GatewaysParserException;
 
-class GatewaysParser
+class GatewaysParser implements ParserInterface
 {
-    private $gate_interface_class = '\SMSKrank\Gateways\GatewayInterface';
+    private $sender_interface = '\SMSKrank\Interfaces\GatewayInterface';
 
-    public function parse(array $data, $what)
+    public function parse(array $data, $section, LoaderInterface $loader)
     {
-        $out = array();
-
-        if (sizeof($data) != 1) {
-            throw new GatewaysParserException("One file - one gateway");
+        if (!isset($data['class'])) {
+            throw new GatewaysParserException("Gateway '{$section}' class missed");
+        } elseif (!class_exists($data['class'])) {
+            throw new GatewaysParserException("Gateway '{$section}' class '{$data['class']}' doesn't exists");
         }
 
-        if (!isset($data[$what])) {
-            throw new GatewaysParserException("Wrong gateway name in file");
+        if (!isset($data['args'])) {
+            $data['args'] = array();
+        } elseif (!is_array($data['args'])) {
+            throw new GatewaysParserException("Gateway '{$section}' arguments should be array");
         }
 
-        foreach ($data as $gate_name => $gate_params) {
-            if (!isset($gate_params['class'])) {
-                throw new GatewaysParserException("Missed gateway class in '{$gate_name}' gate description for");
-            }
+        if (!isset($data['options'])) {
+            $data['options'] = array();
+        } elseif (!is_array($data['options'])) {
+            throw new GatewaysParserException("Gateway '{$section}' options should be array");
+        }
 
-            if (!class_exists($gate_params['class'])) {
-                throw new GatewaysParserException("Gateway class doesn't exists in '{$gate_name}' gate description");
-            }
+        $data['args'] = $this->getGateArguments($data['class'], $data['args']);
 
-            if (!isset($gate_params['args'])) {
-                throw new GatewaysParserException("Missed gateway arguments in '{$gate_name}' gate description");
-            }
+        return $data;
+    }
 
-            if (!is_array($gate_params['args'])) {
-                throw new GatewaysParserException("Gateway class arguments has wrong type (should be array) in '{$gate_name}' gate description");
-            }
+    protected function getGateArguments($class, $arguments)
+    {
+        $reflector = new \ReflectionClass($class);
 
-            if (!isset($gate_params['options'])) {
-                $gate_params['options'] = array();
-            } elseif (!is_array($gate_params['options'])) {
-                throw new GatewaysParserException("Gateway class options has wrong type (should be array) in '{$gate_name}' gate description");
-            }
+        if (!$reflector->implementsInterface($this->sender_interface)) {
+            throw new GatewaysParserException("Gateway class '{$class}' doesn't implement interface '{$this->sender_interface}'");
+        }
 
-            $gate = new \ReflectionClass($gate_params['class']);
+        $args = array();
 
-            if (!$gate->implementsInterface($this->gate_interface_class)) {
-                throw new GatewaysParserException("Gateway class '{$gate_params['class']}' doesn't implement standard gate interface '{$this->gate_interface_class}' in '{$gate_name}' gate description");
-            }
+        if ($reflector->getConstructor()) {
+            $parameters = $reflector->getConstructor()->getParameters();
+        } else {
+            $parameters = array();
+        }
 
-            $config_args = $gate_params['args'];
-            $args        = array();
+        foreach ($parameters as $param) {
+            $param_name = $param->getName();
 
-            foreach ($gate->getConstructor()->getParameters() as $param) {
+            if (!isset($arguments[$param_name])) {
 
-                if (!isset($config_args[$param->getName()])) {
-
-                    if (!$param->isDefaultValueAvailable()) {
-                        $param = $param->getName();
-                        throw new GatewaysParserException("Missed argument '{$param}' for '{$this->gate_interface_class}'  in '{$gate_name}' gate description");
-                    }
-
-                    $args[] = $param->getDefaultValue();
-
-                } else {
-                    $args[] = $config_args[$param->getName()];
+                if (!$param->isDefaultValueAvailable()) {
+                    throw new GatewaysParserException("Gateway class '{$class}' constructor argument '{$param_name}' missed");
                 }
 
-                $out[$gate_name] = array(
-                    'class'   => $gate_params['class'],
-                    'args'    => $args,
-                    'options' => $gate_params['options']
-                );
+                $args[] = $param->getDefaultValue();
+
+            } else {
+                $args[] = $arguments[$param_name];
             }
         }
 
-        return $out;
+        return $args;
     }
 }

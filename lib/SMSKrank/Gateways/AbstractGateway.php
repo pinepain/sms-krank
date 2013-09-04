@@ -2,13 +2,12 @@
 
 namespace SMSKrank\Gateways;
 
-use SMSKrank\GatewayInterface;
 use SMSKrank\Interfaces\MessageBuilderInterface;
 use SMSKrank\Message;
 use SMSKrank\Utils\Options;
 use SMSKrank\Utils\Packer;
 
-abstract class AbstractGateway implements GatewayInterface
+abstract class AbstractGateway implements \SMSKrank\Interfaces\GatewayInterface
 {
     protected $packer;
     protected $builder;

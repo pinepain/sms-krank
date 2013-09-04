@@ -1,5 +1,4 @@
-.ignored-dot:
-  class: '\SMSKrank\Helpers\Gateways\BlackHole'
-  args:
-    login: 'login-ignored'
-    password: 'paswd-ignored'
+class: '\SMSKrank\Helpers\Gateways\BlackHole'
+args:
+  login: 'login-ignored'
+  password: 'paswd-ignored'

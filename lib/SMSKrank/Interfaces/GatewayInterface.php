@@ -1,9 +1,7 @@
 <?php
 
-namespace SMSKrank\Gateways;
+namespace SMSKrank\Interfaces;
 
-use SMSKrank\Interfaces\MessageBuilderInterface;
-use SMSKrank\Interfaces\SenderInterface;
 use SMSKrank\Utils\Options;
 use SMSKrank\Utils\Packer;
 

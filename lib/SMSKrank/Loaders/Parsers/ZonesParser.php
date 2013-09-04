@@ -24,13 +24,24 @@ class ZonesParser implements ParserInterface
         return $res;
     }
 
-    public function isCode($string)
+    protected function isCodePlain($string)
     {
-        if (is_numeric($string) || count(explode('~', $string)) == 2) {
-            return true;
-        }
+        return is_numeric($string);
+    }
 
-        return false;
+    protected function isCodeRange($string)
+    {
+        return (strpos($string, '~') > 0); // for example, range 2~4
+    }
+
+    protected function isCodeList($string)
+    {
+        return (strpos($string, ',') > 0); // for example, 2,3,5,124,432
+    }
+
+    protected function isCode($string)
+    {
+        return $this->isCodePlain($string) || $this->isCodeRange($string) || $this->isCodeList($string);
     }
 
     private function expandZoneData(array $data, $zone, $prefix, LoaderInterface $loader)
@@ -91,9 +102,10 @@ class ZonesParser implements ParserInterface
                 throw new ZonesParserException("No country value provided for code '{$code}' in zone '{$zone}' (prefix '{$prefix}')");
             }
 
-            if (strpos($code, '~')) {
-                // codes range
-                throw new \Exception('TODO: implement');
+            if ($this->isCodeList($code)) {
+                $out = $this->expandCodeList($code, $country);
+            } elseif ($this->isCodeRange($code, $country)) {
+                $out = $this->expandCodeRange($code, $country);
             } else {
                 // numeric code
                 $sub = $this->expandCode($code, $country);
@@ -133,16 +145,63 @@ class ZonesParser implements ParserInterface
         return $sub;
     }
 
-    protected function expandCodesRange($code, $country)
+    protected function expandCodeList($code, $country)
     {
+        $_code = explode(',', $code);
+        $_code = array_filter($_code); // remove empty values
+
+        $out = array();
+
+        foreach ($_code as $c) {
+            $c = trim($c);
+
+            if ($this->isCodeRange($c)) {
+                $sub = $this->expandCodeRange($c, $country);
+            } elseif ($this->isCodePlain($c)) {
+                $sub = $this->expandCode($c, $country);
+            } else {
+                throw new ZonesParserException("Invalid code list '{$code}' (bad code '{$c}')");
+            }
+
+            $out = $this->joinSubZones($out, $sub);
+        }
+
+        return $out;
+    }
+
+    protected function expandCodeRange($code, $country)
+    {
+        throw new ZonesParserException('Code ranges are not implemented yet');
+
         $_code = explode('~', $code);
 
         // TODO support nested zones parsing with optimization
         if (sizeof($_code) != 2) {
-            throw new ZonesParserException("Invalid range in {$code}");
+            throw new ZonesParserException("Invalid range '{$code}'");
         }
 
         list ($start, $end) = $_code;
+
+        if (!$this->isCodePlain($start)) {
+            throw new ZonesParserException("Invalid range '{$code}' start code '{$start}'");
+        }
+
+        if (!$this->isCodePlain($end)) {
+            throw new ZonesParserException("Invalid range '{$code}' end code '{$end}'");
+        }
+
+        if ($end <= $start) {
+            throw new ZonesParserException("Invalid range '{$code}' size, end is less or same to start");
+        }
+
+        $start = str_split($start);
+        $end   = str_split($end);
+
+        // TODO: it would be better to this with strings
+        $start = array_pad($start, count($end), 0); // for situations like 12~135 which transform to 120~135
+
+        // 200~300 may be simplified to 2~3, 234~245 may be simplified to 2 => [34~45], 234~239 -> 23 => [4-9]
+        // 235~480 -> 235~299,3,400~480
 
         $size = $end - $start + 1; // +1 because indexes are from 0 to 9 and we count from 1 to 9
 
@@ -164,13 +223,13 @@ class ZonesParser implements ParserInterface
             $out      = $this->joinSubZones($out, $expanded);
         }
 
+        return $out;
     }
 
     protected function insertCodes($current, array $codes)
     {
         if ($current === false) {
             // nest white-listed code to previously blacklisted code
-            echo "join with fill to blacklisted\n";
 
             $current = array_fill(0, 10, $current);
 

@@ -1,4 +1,3 @@
-second:
-  class: '\SMSKrank\Helpers\Gateways\BlackHole'
-  args:
-    login: 'login-second'
+class: '\SMSKrank\Helpers\Gateways\BlackHole'
+args:
+  login: 'login-second'

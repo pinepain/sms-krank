@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SMSSKrank\Tests\Loaders\Parsers;
+namespace SMSKrank\Tests\Loaders\Parsers;
 
 use SMSKrank\Loaders\Parsers\ParserInterface;
 use SMSKrank\Loaders\Parsers\ZonesParser;
@@ -86,21 +86,21 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
             1,
         );
 
-        // mark code range as not supported
-        $out[] = array(
-            array(
-                1 =>
-                array(
-                    '~' => $foo_props,
-                    5   => false, //marked as not supported
-                    6   => false, //marked as not supported
-                    7   => false, //marked as not supported
-                    8   => false, //marked as not supported
-                )
-            ),
-            array('1' => 'FOO', '15~18' => '--'),
-            1,
-        );
+//        // mark code range as not supported
+//        $out[] = array(
+//            array(
+//                1 =>
+//                array(
+//                    '~' => $foo_props,
+//                    5   => false, //marked as not supported
+//                    6   => false, //marked as not supported
+//                    7   => false, //marked as not supported
+//                    8   => false, //marked as not supported
+//                )
+//            ),
+//            array('1' => 'FOO', '15~18' => '--'),
+//            1,
+//        );
 
         // add code to previously marked as not supported section
         $out[] = array(
@@ -163,15 +163,52 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
         return $out;
     }
 
+    public function providerExpandCodeListSuccess()
+    {
+        $out = array();
+
+        $country = 'TEST';
+
+        $out[] = array(array(1 => $country, 2 => $country, 5 => $country), '1, 2, 5', $country);
+//        $out[] = array(array(1 => $country, 2 => $country, 5 => $country), '1, 11, 143, 5', $country);// TODO: this one provides ineffective result
+        $out[] = array(
+            array(1 => array(1 => $country, 2 => $country), 2 => array(5 => $country)), '11, 12, 25', $country
+        );
+
+        return $out;
+    }
+
+    public function providerExpandCodeListFailure()
+    {
+        $out     = array();
+        $country = 'TEST';
+
+        $out[] = array(
+            '1, 2, BAD CODE', $country,
+            'SMSKrank\Loaders\Parsers\Exceptions\ZonesParserException',
+            "Invalid code list '1, 2, BAD CODE' (bad code 'BAD CODE')"
+        );
+
+        return $out;
+    }
+
+    /**
+     * @covers       \SMSKrank\Loaders\Parsers\ZonesParser::expandCodeList
+     *
+     * @dataProvider providerExpandCodeListSuccess
+     */
+    public function testExpandCodeListSuccess($expected, $code, $country)
+    {
+        $method = new \ReflectionMethod($this->parser, 'expandCodeList');
+        $method->setAccessible(true);
+
+        $this->assertEquals($expected, $method->invoke($this->parser, $code, $country));
+    }
+
     /**
      * @covers       \SMSKrank\Loaders\Parsers\ZonesParser
      *
      * @dataProvider providerParseSuccess
-     *
-     * @param $expected
-     * @param $data
-     * @param $section
-     * @param $loader_map
      */
     public function testParseSuccess($expected, $data, $section, $loader_map = array())
     {
@@ -184,17 +221,25 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->parser->parse($data, $section, $mock));
     }
 
+    /**
+     * @covers       \SMSKrank\Loaders\Parsers\ZonesParser::expandCodeList
+     *
+     * @dataProvider providerExpandCodeListFailure
+     */
+    public function testExpandCodeListFailure($code, $country, $exception_name, $exception_message)
+    {
+        $method = new \ReflectionMethod($this->parser, 'expandCodeList');
+        $method->setAccessible(true);
+
+        $this->setExpectedException($exception_name, $exception_message);
+
+        $method->invoke($this->parser, $code, $country);
+    }
 
     /**
      * @covers       \SMSKrank\Loaders\Parsers\ZonesParser
      *
      * @dataProvider providerParseFailure
-     *
-     * @param $data
-     * @param $section
-     * @param $loader_map
-     * @param $exception_name
-     * @param $exception_message
      */
     public function testParseFailure($data, $section, $loader_map, $exception_name, $exception_message)
     {
