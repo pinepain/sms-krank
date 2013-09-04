@@ -19,6 +19,10 @@ class FileLoader implements LoaderInterface
             throw new LoaderException('Source does not exists');
         }
 
+        if (is_file($this->source)) {
+            throw new LoaderException("Source should be directory");
+        }
+
         $this->source = $source;
         $this->parser = $parser;
     }
@@ -34,34 +38,20 @@ class FileLoader implements LoaderInterface
     {
         if (null === $what) {
 
-            if (is_file($this->source)) {
-
-                $container_file = $this->source;
-
-                $_parts = pathinfo($container_file);
-                $what   = $_parts['filename']; // since PHP 5.2.0
-
-            } else {
-
-                $dir_content = array_filter(
-                    scandir($this->source),
-                    function ($val) {
-                        return $val[0] != '.' && substr($val, -5) == '.yaml';
-                    }
-                );
-
-                foreach ($dir_content as $what) {
-                    $this->load(substr($what, 0, -5), $one_shot);
+            $dir_content = array_filter(
+                scandir($this->source),
+                function ($val) {
+                    return $val[0] != '.' && substr($val, -5) == '.yaml';
                 }
+            );
 
-                return $this->container;
+            foreach ($dir_content as $what) {
+                $this->load(substr($what, 0, -5), $one_shot);
             }
+
+            return $this->container;
 
         } else {
-            if (is_file($this->source)) {
-                throw new LoaderException("Source directory is file ({$this->source})");
-            }
-
             $container_file = $this->source . DIRECTORY_SEPARATOR . $what . '.yaml';
         }
 
@@ -102,11 +92,22 @@ class FileLoader implements LoaderInterface
     public function get($what = null, $one_shot = false)
     {
         if (null != $what) {
+
             if (!isset($this->container[$what])) {
                 $result = $this->load($what, $one_shot);
             } else {
                 // maybe we can backup current item and load it again in one-shot?
-                $result = $this->container[$what];
+                if ($one_shot) {
+                    $container = $this->container; // backup
+
+                    $this->container = array(); // cleanup
+
+                    $result = $this->load($what, $one_shot); // load it
+
+                    $this->container = $container; // restore original
+                } else {
+                    $result = $this->container[$what];
+                }
             }
 
         } else {
@@ -118,14 +119,15 @@ class FileLoader implements LoaderInterface
 
     public function has($what)
     {
-        try {
-            $this->get($what);
-
+        if (isset($this->container[$what])) {
             return true;
-        } catch (\Exception $e) {
         }
 
-        return false;
+        $container_file = $this->source . DIRECTORY_SEPARATOR . $what . '.yaml';
+
+        $container_file = realpath($container_file);
+
+        return ($container_file && file_exists($container_file));
     }
 
     public function remove($what = null)
