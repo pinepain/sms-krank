@@ -130,13 +130,15 @@ class GatewaysParserTest extends \PHPUnit_Framework_TestCase
     {
         $out = array();
 
-        $section = 'section-ignored';
+        $section = 'GATE-NAME';
 
         $out[] = array(
             array(
-                'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
-                'args'    => array('mocked'),
-                'options' => array()
+                $section => array(
+                    'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
+                    'args'    => array('mocked'),
+                    'options' => array()
+                )
             ),
             array(
                 'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
@@ -150,9 +152,11 @@ class GatewaysParserTest extends \PHPUnit_Framework_TestCase
         // default value for options
         $out[] = array(
             array(
-                'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
-                'args'    => array('mocked'),
-                'options' => array()
+                $section => array(
+                    'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
+                    'args'    => array('mocked'),
+                    'options' => array()
+                )
             ),
             array(
                 'class' => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
@@ -165,9 +169,11 @@ class GatewaysParserTest extends \PHPUnit_Framework_TestCase
         // default value for arguments
         $out[] = array(
             array(
-                'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
-                'args'    => array('mocked'),
-                'options' => array()
+                $section => array(
+                    'class'   => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',
+                    'args'    => array('mocked'),
+                    'options' => array()
+                )
             ),
             array(
                 'class' => '\SMSKrank\Helpers\Gateways\Valid\ConstructorWithAllRequired',

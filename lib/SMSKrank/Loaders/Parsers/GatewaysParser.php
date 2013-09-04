@@ -31,7 +31,7 @@ class GatewaysParser implements ParserInterface
 
         $data['args'] = $this->getGateArguments($data['class'], $data['args']);
 
-        return $data;
+        return array($section => $data);
     }
 
     protected function getGateArguments($class, $arguments)
