@@ -19,7 +19,7 @@ class FileLoader implements LoaderInterface
             throw new LoaderException('Source does not exists');
         }
 
-        if (is_file($this->source)) {
+        if (is_file($source)) {
             throw new LoaderException("Source should be directory");
         }
 
@@ -28,15 +28,17 @@ class FileLoader implements LoaderInterface
     }
 
     /**
-     * @param null $what     Container name to load
-     * @param bool $one_shot Do not store result, just return it
+     * @param null $section     Container name to load
+     * @param bool $one_shot    Do not store result, just return it
      *
      * @return array
      * @throws Exceptions\LoaderException
      */
-    public function load($what = null, $one_shot = false)
+    public function load($section = null, $one_shot = false)
     {
-        if (null === $what) {
+        if (null === $section) {
+
+            // TODO: test directory to be readable
 
             $dir_content = array_filter(
                 scandir($this->source),
@@ -45,39 +47,38 @@ class FileLoader implements LoaderInterface
                 }
             );
 
-            foreach ($dir_content as $what) {
-                $this->load(substr($what, 0, -5), $one_shot);
+            // TODO: exclude directories (but who will make directory name ends with '.yaml'?)
+
+            foreach ($dir_content as $section) {
+                $this->load(substr($section, 0, -5), $one_shot);
             }
 
             return $this->container;
 
         } else {
-            $container_file = $this->source . DIRECTORY_SEPARATOR . $what . '.yaml';
+            $container_file = $this->source . DIRECTORY_SEPARATOR . $section . '.yaml';
         }
 
-        $_container_file = realpath($container_file);
+        // $_container_file = realpath($container_file); // realpath doesn't like vfsStream
+        $_container_file = $container_file;
 
         if (!file_exists($container_file)) {
-            throw new LoaderException("Container file '{$what}' does not exists ({$container_file})");
+            throw new LoaderException("File '{$container_file}' does not exists");
         }
 
         if (!is_readable($container_file)) {
-            throw new LoaderException("Container file '{$what}' is not readable ({$_container_file})");
+            throw new LoaderException("File '{$_container_file}' is not readable");
         }
 
         $loaded = Yaml::parse(file_get_contents($container_file));
 
         if (!is_array($loaded)) {
-            throw new LoaderException("Garbage in container file '{$what}' ({$_container_file})");
+            throw new LoaderException("File '{$_container_file}' contains garbage");
         }
 
         $container       = $this->container; // backup container
-        $parsed          = $this->parser->parse($loaded, $what, $this);
+        $parsed          = array($section => $this->parser->parse($loaded, $section, $this));
         $this->container = $container; // restore container
-
-        if (!is_array($parsed)) {
-            throw new LoaderException("Garbage data after parsing in '{$what}' container");
-        }
 
         if ($one_shot) {
             return $parsed;
