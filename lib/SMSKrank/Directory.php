@@ -4,6 +4,7 @@ namespace SMSKrank;
 
 use SMSKrank\Exceptions\DirectoryException;
 use SMSKrank\Loaders\Exceptions\LoaderException;
+use SMSKrank\Loaders\LoaderInterface;
 use SMSKrank\Utils\ZonesLoader;
 
 class Directory
@@ -11,7 +12,7 @@ class Directory
     private $mandatory = array('geo', 'code', 'validation');
     private $zones_loader;
 
-    public function __construct(ZonesLoader $zones_loader)
+    public function __construct(LoaderInterface $zones_loader)
     {
         $this->zones_loader = $zones_loader;
     }

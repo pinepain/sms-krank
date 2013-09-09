@@ -41,7 +41,6 @@ TODO
 - [ ] gates testing tool (framework)
 - [ ] one file loader and multiple parsers for different content types
 - [ ] loaders caching
-- [ ] phoneworlds support in phone numbers and zones description (separate utility for phone number normalizing)
 
 Message capacity
 ----------------
