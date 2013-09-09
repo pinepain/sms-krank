@@ -1,5 +1,8 @@
 # Zone 7: Former  Soviet Union
 
+validation:
+  length : 11
+
 +7: #RU, KZ
   0  : -- # Not used (long distance and international prefix)
   1  : -- # Not used (for special services)

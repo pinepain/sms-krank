@@ -10,7 +10,9 @@ geo:
   country_alpha2: UZ
 code:
   country: 994  # international calling code
+
 validataion:
+  length : 12
   nsn    : 9 # national significant number
   ccn    : 3 # country code number
 

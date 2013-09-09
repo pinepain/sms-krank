@@ -1,0 +1,5 @@
+# Zone 1: North American Numbering Plan countries and territories
+# CA, US, AG, AI, AS, BB, BM, BS, DM, DO, GD, GU, JM, KN, KY, LC, MP, MS, PR, SX, TC, TT, VC, VG, VI
+
+validataion:
+  length : 11

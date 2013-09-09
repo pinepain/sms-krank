@@ -19,8 +19,8 @@ The reason why you want to send thousands of sms may vary, but one of use cases 
 * Keep text size to fit required number of messages (by default 1)
 * Distinguish pure GSM encoded messages from Unicode messages to properly calculate max allowed text size.
 * Remove multiple whitespace characters (optional, by default is on), cleanup broken unicode characters.
-* No external dependencies (only `mb_string` extension used);
-
+* No external dependencies (only `mb_string` extension used).
+* Phone Word support (limited, see TODO)
 
 #### Supported charsets
 
@@ -41,6 +41,8 @@ TODO
 - [ ] gates testing tool (framework)
 - [ ] one file loader and multiple parsers for different content types
 - [ ] loaders caching
+- [ ] setting context to parse local phone numbers (for example, set context NANP and deal with 234-235-5678 like with +1-234-235-5678 or same as 001-234-235-5678, it also enables International Call Prefix support
+- [ ] Deal with extra characters in phone words numbers like 1-800-MY-IPHONE in fact is just 1-800-MY-IPHON (without E letter)
 
 Message capacity
 ----------------
