@@ -132,6 +132,25 @@ class ZonesParserTest extends \PHPUnit_Framework_TestCase
             1,
         );
 
+        // load props from root description
+        $out[] = array(
+            array(
+                1 =>
+                array(
+                    '~' => array('validation' => array('length' => 11)),
+                    2   => array(
+                        '~' => array(
+                            'geo'  => array('country_alpha2' => 'FOO'),
+                            'code' => array('country' => 12),
+                        )
+                    ),
+                    5   => false, //marked as not supported
+                )
+            ),
+            array('1' => array('validation' => array('length' => 11)), 12 => 'FOO', '15' => '--'),
+            1,
+        );
+
         return $out;
     }
 
