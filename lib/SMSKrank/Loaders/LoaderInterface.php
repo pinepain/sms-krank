@@ -13,7 +13,7 @@ interface LoaderInterface
      * @return array
      * @throws Exceptions\LoaderException
      */
-    public function load($container = null, $one_shot = false);
+    public function load($container, $one_shot = false);
 
     /**
      * Get containers. If they was not loaded - load and get

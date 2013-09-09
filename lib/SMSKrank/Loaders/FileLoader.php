@@ -27,63 +27,79 @@ class FileLoader implements LoaderInterface
         $this->parser = $parser;
     }
 
-    /**
-     * @param null $section     Container name to load
-     * @param bool $one_shot    Do not store result, just return it
-     *
-     * @return array
-     * @throws Exceptions\LoaderException
-     */
-    public function load($section = null, $one_shot = false)
+    protected function loadFile($path, $section)
     {
-        if (null === $section) {
-
-            // TODO: test directory to be readable
-
-            $dir_content = array_filter(
-                scandir($this->source),
-                function ($val) {
-                    return $val[0] != '.' && substr($val, -5) == '.yaml';
-                }
-            );
-
-            // TODO: exclude directories (but who will make directory name ends with '.yaml'?)
-
-            foreach ($dir_content as $section) {
-                $this->load(substr($section, 0, -5), $one_shot);
-            }
-
-            return $this->container;
-
-        } else {
-            $container_file = $this->source . DIRECTORY_SEPARATOR . $section . '.yaml';
+        if (!file_exists($path)) {
+            throw new LoaderException("File '{$path}' does not exists");
         }
 
-        // $_container_file = realpath($container_file); // realpath doesn't like vfsStream
-        $_container_file = $container_file;
-
-        if (!file_exists($container_file)) {
-            throw new LoaderException("File '{$container_file}' does not exists");
+        if (!is_readable($path)) {
+            throw new LoaderException("File '{$path}' is not readable");
         }
 
-        if (!is_readable($container_file)) {
-            throw new LoaderException("File '{$_container_file}' is not readable");
-        }
-
-        $loaded = Yaml::parse(file_get_contents($container_file));
+        $loaded = Yaml::parse(file_get_contents($path));
 
         if (!is_array($loaded)) {
-            throw new LoaderException("File '{$_container_file}' contains garbage");
+            throw new LoaderException("File '{$path}' contains garbage");
         }
 
-        $container       = $this->container; // backup container
-        $parsed          = array($section => $this->parser->parse($loaded, $section, $this));
-        $this->container = $container; // restore container
+        return array($section => $this->parser->parse($loaded, $section, $this));
+    }
+
+    protected function loadDirectory($path)
+    {
+        if (!is_dir($path)) {
+            throw new LoaderException("Directory '{$path}' does not exists");
+        }
+
+        $nested_sections = array_filter(
+            scandir($path),
+            function ($name) use ($path) {
+                return $name[0] != '.' && substr($name, -5) == '.yaml' && is_file($path . DIRECTORY_SEPARATOR . $name);
+            }
+        );
+
+        $container = array();
+
+        foreach ($nested_sections as $s) {
+            $container = $this->loadFile($path . DIRECTORY_SEPARATOR . $s, substr($s, 0, -5)) + $container;
+        }
+
+        return $container;
+    }
+
+    /**
+     * @param string $section  Container name to load
+     * @param bool   $one_shot Do not store result, just return it
+     *
+     * @return array
+     */
+    public function load($section, $one_shot = false)
+    {
+
+        $is_wildcard = (substr($section, -2) === '/*');
+
+        if ($is_wildcard) {
+            $section   = substr($section, 0, strlen($section) - 2);
+            $container = $this->loadDirectory($this->source . DIRECTORY_SEPARATOR . $section);
+
+            if (!empty($section)) {
+                $plain_container = array();
+                foreach ($container as $k => $v) {
+                    $plain_container[$section . DIRECTORY_SEPARATOR . $k] = $v;
+                }
+                $container = $plain_container;
+            }
+        } else {
+            $container_file = $this->source . DIRECTORY_SEPARATOR . $section . '.yaml';
+
+            $container = $this->loadFile($container_file, $section);
+        }
 
         if ($one_shot) {
-            return $parsed;
+            return $container;
         } else {
-            $this->container = $parsed + $this->container;
+            $this->container = $container + $this->container;
             ksort($this->container);
 
             return $this->container;
@@ -96,6 +112,7 @@ class FileLoader implements LoaderInterface
 
             if (!isset($this->container[$what])) {
                 $result = $this->load($what, $one_shot);
+                $result = $result[$what];
             } else {
                 // maybe we can backup current item and load it again in one-shot?
                 if ($one_shot) {
@@ -104,13 +121,13 @@ class FileLoader implements LoaderInterface
                     $this->container = array(); // cleanup
 
                     $result = $this->load($what, $one_shot); // load it
+                    $result = $result[$what];
 
                     $this->container = $container; // restore original
                 } else {
                     $result = $this->container[$what];
                 }
             }
-
         } else {
             $result = $this->container;
         }
@@ -125,8 +142,6 @@ class FileLoader implements LoaderInterface
         }
 
         $container_file = $this->source . DIRECTORY_SEPARATOR . $what . '.yaml';
-
-        $container_file = realpath($container_file);
 
         return ($container_file && file_exists($container_file));
     }
