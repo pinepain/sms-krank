@@ -49,8 +49,8 @@ TODO
 - [ ] gates testing tool (framework)
 - [ ] one file loader and multiple parsers for different content types
 - [ ] loaders caching
-- [ ] setting context to parse local phone numbers (for example, set context NANP and deal with 234-235-5678 like with +1-234-235-5678 or same as 001-234-235-5678, it also enables International Call Prefix support
-- [ ] Deal with extra characters in phone words numbers like 1-800-MY-IPHONE in fact is just 1-800-MY-IPHON (without E letter)
+- [ ] setting context to parse local phone numbers (for example, set context NANP and deal with 234-235-5678 like with
+      +1-234-235-5678 or same as 001-234-235-5678, it also enables International Call Prefix support
 
 Message capacity
 ----------------
@@ -58,7 +58,6 @@ Message capacity
  Encoding | Single | Partial
 -----------------------------
    7 bit  |  160   |  153
-   8 bit  |  140   |  134
+   8 bit  |  140   |  134   <- damn rare, we don't deal with it in this project, at least now
   16 bit  |   70   |   67
-
 ```
