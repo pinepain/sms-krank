@@ -3,36 +3,40 @@
 namespace SMSKrank;
 
 use SMSKrank\Exceptions\DirectoryException;
-use SMSKrank\Loaders\Exceptions\LoaderException;
 use SMSKrank\Loaders\LoaderInterface;
-use SMSKrank\Utils\ZonesLoader;
+use SMSKrank\PhoneNumbers\Detailed;
+use SMSKrank\PhoneNumbers\Parsers\PhoneNumberParserInterface;
+use SMSKrank\PhoneNumbers\Plain;
+use SMSKrank\Utils\Options;
 
 class Directory
 {
-    private $mandatory = array('geo', 'code', 'validation');
-    private $zones_loader;
+    protected $mandatory = array('geo', 'code', 'validation');
+    protected $zones_loader;
+    protected $numbers_parser;
 
-    public function __construct(LoaderInterface $zones_loader)
+    public function __construct(LoaderInterface $zones_loader, PhoneNumberParserInterface $numbers_parser)
     {
-        $this->zones_loader = $zones_loader;
+        $this->zones_loader   = $zones_loader;
+        $this->numbers_parser = $numbers_parser;
+    }
+
+    public function getPhoneNumber($number)
+    {
+        $number = $this->numbers_parser->parse($number);
+
+        $this->zones_loader->get($number[0]); // just to be sure that zone is supported
+
+        return new Plain($number);
     }
 
     public function getPhoneNumberDetailed($number)
     {
         // TODO: add detalisation level: required props or max search depth
 
-        $number = preg_replace('/[^0-9]/', '', $number);
+        $number = $this->numbers_parser->parse($number);
 
-        if (!strlen($number)) {
-            throw new DirectoryException("Empty phone number");
-        }
-
-        try {
-            $zone_desc = $this->zones_loader->get($number[0]);
-
-        } catch (LoaderException $e) {
-            throw new DirectoryException('Phone number calling code is not supported');
-        }
+        $zone_desc = $this->zones_loader->get($number[0]);
 
         $props = $this->getNumberProps(substr($number, 1), $zone_desc, $number[0]);
 
@@ -48,16 +52,25 @@ class Directory
         }
 
         // TODO: validate only if phone parsed in full depth
-        $this->validateNumber($number, $out['validation']);
+        $this->validateNumber($number, new Options($out['validation']));
 
-        return new PhoneNumberDetailed($number, $out['code'], $out['geo'], $props);
-
+        return new Detailed($number, $out['code'], $out['geo'], $props);
     }
 
-    private function validateNumber($number, array $rules)
+    private function validateNumber($number, Options $rules)
     {
-        if (isset($rules['icc']) && isset($rules['ncc']) && strlen($number) != $rules['icc'] + $rules['ncc']) {
-            throw new DirectoryException("Validation failed for '{$number}' phone number (invalid length)");
+        $len = strlen($number);
+
+        if ($rules->has('length') && $len != $rules->get('lenght')) {
+            throw new DirectoryException("Phone number '{$number}' has invalid fixed length");
+        }
+
+        if ($rules->has('min-length') && $len < $rules->get('length')) {
+            throw new DirectoryException("Phone number '{$number}' has invalid minimal length");
+        }
+
+        if ($rules->has('max-length') && $len > $rules->get('length')) {
+            throw new DirectoryException("Phone number '{$number}' has invalid max length");
         }
     }
 

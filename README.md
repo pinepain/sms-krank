@@ -51,6 +51,8 @@ TODO
 - [ ] loaders caching
 - [ ] setting context to parse local phone numbers (for example, set context NANP and deal with 234-235-5678 like with
       +1-234-235-5678 or same as 001-234-235-5678, it also enables International Call Prefix support
+- [ ] placeholder in zones file for current code level and positioning, $ -> 123 when we are in 1-2-3 level
+- [ ] phone number output formatting depends of national or international standards
 
 Message capacity
 ----------------
