@@ -43,6 +43,7 @@ informing user about new items in stock (sure, if he previously ask to send such
 TODO
 ----
 
+- [ ] get rid of configuration magic and make it simple and clear
 - [ ] documentation and examples
 - [ ] unit tests
 - [ ] check gates whether they are alive and credentials are valid
