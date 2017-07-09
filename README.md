@@ -1,3 +1,8 @@
+WARNING: This project is UNSUPPORTED and ABANDONED
+==================================================
+
+
+
 sms-krank
 =========
 [![Build Status](https://travis-ci.org/pinepain/sms-krank.png)](https://travis-ci.org/pinepain/sms-krank)
